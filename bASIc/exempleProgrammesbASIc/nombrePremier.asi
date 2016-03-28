@@ -1,0 +1,12 @@
+estPremier = vrai
+saisie: lire nb
+si nb < 2 alors allera saisie
+si nb == 2 alors allera fin
+div = 1
+boucle1 : div = div + 1
+  k = 1
+  boucle2 : k = k + 1
+    si nb == k*div alors estPremier = faux
+    si div < nb et k*2 <= div et estPremier alors allera boucle2
+    si div < nb et estPremier alors allera boucle1
+fin: ecrire estPremier
