@@ -11,56 +11,85 @@
 	\maketitle
 	\tableofcontents
 	\newpage
-	
+
 	\section{Étude du système mécanique}
-		\subsection{Étude théorique}	
+		\subsection{Étude théorique}
 			\newpage
 
 		\subsection{Étude pratique}
 			\begin{center}
-				\includegraphics[width=12cm]{../Images/Figure1.png} 	
-				\begin{itemize}
-					\item Le temps de réponse à 5 \% obtenu est de :
-					\item Le pourcentage de dépassement est de:
-					\item Le temps de montée est de: 			
-				\end{itemize}
-			\end{center}			
+				\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/Automatique/TP3/Images/Figure1.pdf}
+			\end{center}
+			\begin{itemize}
+				\item Le temps de réponse à 5 \% obtenu est de: 0.021s
+				\item Le pourcentage de dépassement est de: 0.15\%
+				\item Le temps de montée (passage de 10\% à 90\% de la valeur finale) est de: 0.016s
+				\item Le temps de montée (temps pour atteindre pour la première fois la valeur finale) est de: 0.033s
+			\end{itemize}
 	\newpage
-			
+
 	\section{Cahier des charges}
-		\newpage	
-		
+		\newpage
+
 	\section{Réglage de la rapidité}
 		\subsection{Étude théorique}
 			\newpage
-
+			
 		\subsection{Étude pratique: réponse de l'enregistreur asservi}
 			\begin{center}
-				\includegraphics[width=12cm]{../Images/Figure2.png} 	
-				\begin{itemize}
-					\item Le temps de réponse à 5 \% obtenu est de :
-					\item Le pourcentage de dépassement est de:
-					\item Le temps de montée est de: 			
-				\end{itemize}
-				Au vu des résultats obtenus nous pouvons en déduire deux choses: soit les calculs effectués sont erronés, soit les performances retrouvées ne répondent pas aux exigences du cahier des charges.
-				\includegraphics[width=12cm]{../Images/Figure3.png}
-				\begin{itemize}
-					\item La marge de phase obtenue est de:
-					\item Le pulsation de coupure w0 obtenue est de:
-				\end{itemize}
+				\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/Automatique/TP3/Images/Figure2.pdf}
 			\end{center}
-
+			\begin{itemize}
+				\item Le temps de réponse à 5 \% obtenu est de: 0.0016s
+				\item Le pourcentage de dépassement est de: 67.69\%
+				\item Le temps de montée (passage de 10\% à 90\% de la valeur finale) est de: 0.0014s
+				\item Le temps de montée (temps pour atteindre pour la première fois la valeur finale) est de: 0.0013s
+			\end{itemize}
+			On constate que le temps de montée est quasiment deux fois plus petit que les 2ms désirées. \\
+			Le pourcentage de dépassement maximum est quant à lui bien trop grand par rapport aux 10\% souhaités. 
+			\begin{center}
+				\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/Automatique/TP3/Images/Figure3.pdf}
+			\end{center}
+			\begin{itemize}
+				\item La marge de phase obtenue est de: 14.24rad
+				\item Le pulsation de coupure wc0 obtenue est de: 1362.97
+			\end{itemize}
+			Nous voulions obtenir une marge de phase de 60rad, or le système actuel est bien loin de répondre à cette demande. \\
+			Nous pouvons cependant constater que la pulsation de coupure wc0 correspond aux résultats attendus dans la question précédente. \\
+			Nous pouvons donc déduire de ces résultats que ce système ne répond pas aux exigences du cahier des charges et manque encore de précision.\\
+			Le correcteur proportionnel a eu une influence sur le temps de montée qui est dorénavant un peu trop rapide par rapport aux exigences du cahier des charges. Le pourcentage de dépassement a également été influé par ce correcteur puisque dorénavant sa valeur ne correspond plus du tout aux exigences. Nous pouvons donc en conclure que le correcteur proportionnel, en s'accordant une marge d'erreur, suffit pour régler la rapidité. En effet le temps de montée est passé de 33ms sur le système initial à 1.3ms. Cependant, au vu du pourcentage de dépassement obtenu, la stabilité du système ne peut être correctement corrigée à l'aide de ce type de correcteur.
+			\newpage
 
 	\section{Réglage du dépassement}
 		\subsection{Étude théorique}
 			\newpage
-		\subsection{Étude pratique} 
-
+		\subsection{Étude pratique}
+			\begin{center}
+				\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/Automatique/TP3/Images/Figure4.pdf}
+			\end{center}
+			\begin{center}
+				\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/Automatique/TP3/Images/Figure5.pdf}
+			\end{center}
+			\begin{itemize}
+				\item La marge de phase obtenue est de: 60rad
+				\item Le pulsation de coupure wc0 obtenue est de: 1362.97
+				\item Le temps de réponse à 5 \% obtenu est de: 0.015s
+				\item Le pourcentage de dépassement est de: 14.83\%
+				\item Le temps de montée (passage de 10\% à 90\% de la valeur finale) est de: 0.0012s
+				\item Le temps de montée (temps pour atteindre pour la première fois la valeur finale) est de: 0.0014s
+			\end{itemize}
+			Nous pouvons constater qu'à l'issue de l'utilisation de ce correcteur, la marge de phase ainsi que la pulsation de coupure wc0 correspondent aux valeurs souhaitées dans la partie 2. \\
+			En ce qui concerne le pourcentage de dépassement, bien qu'il soit encore supérieur aux exigences du cahier des charges, nous pouvons constater que sa valeur est relativement proches des 10\% souhaités. Il en va de même pour le temps de montée qui est encore un peu trop rapide par rapport aux 2ms du cahier des charges, mais restant encore assez proche. \\
+			Si l'on accorde une certaine marge d'erreur aux résultats obtenus, nous pouvons donc en conclure que ce système répond aux attentes du cahier des charges.
+			\begin{center}
+				\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/Automatique/TP3/Images/Figure6.pdf}
+			\end{center}
+			
+			
 	\section{Code Scilab}
 		\begin{center}
-			\includepdf[page=1]{../Images/Code.pdf}
-			\includepdf[page=2]{../Images/Code.pdf}
-			\includepdf[page=3]{../Images/Code.pdf}
+			\includepdf[page=1]{/home/ttheologien/MEGAsync/Automatique/TP3/Images/Code.pdf}
+			\includepdf[page=2]{/home/ttheologien/MEGAsync/Automatique/TP3/Images/Code.pdf}
+			\includepdf[page=3]{/home/ttheologien/MEGAsync/Automatique/TP3/Images/Code.pdf}
 		\end{center}
 \end{document}
-
