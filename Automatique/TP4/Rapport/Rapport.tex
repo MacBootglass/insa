@@ -1,0 +1,73 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+
+\title{Automatique - Compte rendu TP3}
+\author{Thibault THEOLOGIEN}
+
+\begin{document}
+	\maketitle
+	\tableofcontents
+	\newpage
+
+	\section{Etude de la boucle secondaire}
+		\subsection{Etude des caractéristiques de H2(p)}
+			\begin{center}
+				\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Images/Figure1.png}
+			\end{center}
+
+			\begin{itemize}
+				\item Le temps de réponse à 5 \% obtenu est de: 52.9ms
+				\item Le pourcentage de dépassement est de: 689.45\%
+				\item Le temps de montée (passage de 10\% à 90\% de la valeur finale) est de: 1.5ms
+				\item Le temps de montée (temps pour atteindre pour la première fois la valeur finale) est de: 0.2ms
+			\end{itemize}
+
+			Le couple appliqué à la bande est 600 fois trop important.
+
+			\begin{center}
+				\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Images/Figure2.png}
+			\end{center}
+
+			\begin{itemize}
+				\item La marge de phase obtenue est de: 89.68\degre
+				\item La marge de gain obtenue est infinie.
+				\item La fréquence de coupure à 0 dB fcO obtenue est de: 31830Hz
+			\end{itemize}
+
+		\subsection{Synthèse du régulateur de couple}
+			Afin que la boucle secondaire puisse satisfaire les exigences du cahier des charges on va utiliser un correcteur PI.\\
+			En effet on souhaite avoir une marge de phase de 90\degre, un temps de réponse de 0,4 ms et une erreur statique nulle. \\
+			La marge de phase étant déjà correcte, il ne reste donc qu'à régler les deux autres paramètres. \\
+			Pour obtenir une erreur statique nulle, il nous faut un intégrateur. Le correcteur PI permet de répondre à ces exigences: il permet de diminuer le temps de réponse et d'annuler l'erreur statique sans changer la marge de phase.
+			\newpage
+			Calcul des paramètres du correcteur:
+
+			\begin{center}
+				\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Images/Figure3.png}
+			\end{center}
+
+			On obtient les paramètres suivant:
+			\begin{itemize}
+				\item La marge de phase obtenue est de: 89.68\degre
+				\item La marge de gain obtenue est infinie.
+				\item Le pulsation de coupure wc0 obtenue est de: 200000rad/s
+				\item La fréquence de coupure à 0 dB fcO obtenue est de: 31830Hz
+			\end{itemize}
+
+	\newpage
+
+	\section{Etude de la boucle principale}
+		\subsection{Etude des caractéristiques de la boucle principale}
+
+		\subsection{Synthèse du régulateur de traction}
+
+		\subsection{Sensibilité de la régulation}
+	\newpage
+	\section{Code Scilab}
+
+
+\end{document}
