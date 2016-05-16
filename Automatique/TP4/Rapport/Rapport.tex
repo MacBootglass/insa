@@ -131,10 +131,10 @@
 
 			\par On obtient les mesures suivant:
 			\begin{itemize}
-				\item La marge de phase obtenue est de: 102.82\degre
+				\item La marge de phase obtenue est de: 120\degre
 				\item La marge de gain obtenue est infinie.
-				\item Le pulsation de coupure wc0 obtenue est de: 17.42/s
-				\item La fréquence de coupure à 0 dB fc0 obtenue est de: 2.77Hz\\
+				\item Le pulsation de coupure wc0 obtenue est de: 6.92rad/s
+				\item La fréquence de coupure à 0 dB fc0 obtenue est de: 1.10Hz\\
 			\end{itemize}
 			\pagebreak
 
@@ -145,10 +145,10 @@
 
 			\par On obtient les mesures suivantes:
 			\begin{itemize}
-				\item Le temps de réponse à 5 \% obtenu est de: 0.46s
-				\item Le pourcentage de dépassement est de: 13.88\%
-				\item Le temps de montée (passage de 10\% à 90\% de la valeur finale) est de: 0.13s
-				\item Le temps de montée (temps pour atteindre pour la première fois la valeur finale) est de: 0.12s\\
+				\item Le temps de réponse à 5 \% obtenu est de: 1.75s
+				\item Le pourcentage de dépassement est de: 17.4\%
+				\item Le temps de montée (passage de 10\% à 90\% de la valeur finale) est de: 0.27s
+				\item Le temps de montée (temps pour atteindre pour la première fois la valeur finale) est de: 0.26s\\
 			\end{itemize}
 			\par Le temps de montée a bien été corrigé, cependant il est peut être un peu trop faible par rapport au exigences du cahier des charges.
 			Le pourcentage de dépassement est quant à lui légèrement supérieur aux exigences.
@@ -164,18 +164,57 @@
 					\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Images/Figure10.png}
 				\end{center}
 
+				\par On obtient les performances suivantes:
+				\begin{itemize}
+					\item La marge de phase obtenue est de: 135\degre
+					\item La marge de gain obtenue est infinie.
+					\item Le pulsation de coupure wc0 obtenue est de: 3.56rad/s
+					\item La fréquence de coupure à 0 dB fc0 obtenue est de: 0.57Hz
+					\item Le temps de réponse à 5 \% obtenu est de: 4.21s
+					\item Le pourcentage de dépassement est de: 12.2\%
+					\item Le temps de montée (passage de 10\% à 90\% de la valeur finale) est de: 0.52s
+					\item Le temps de montée (temps pour atteindre pour la première fois la valeur finale) est de: 0.55s\\
+				\end{itemize}
+				\pagebreak
+
 			\subsubsection{Cas ou R vaut 0.3m}
 				\par Ce cas a déjà été traité dans la partie 2.2: se référer à la partie \ref{sub:syntRegTrac} page \pageref{sub:syntRegTrac}.
-				\pagebreak
 
 			\subsubsection{Cas ou R vaut 0.5m}
 				\par Visualisation de la réponse fréquentielle de la boucle fermée H1BF(p):
 				\begin{center}
 					\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Images/Figure12.png}
 				\end{center}
+
+				\par On obtient les performances suivantes:
+				\begin{itemize}
+					\item La marge de phase obtenue est de: 101\degre
+					\item La marge de gain obtenue est infinie.
+					\item Le pulsation de coupure wc0 obtenue est de: 20.12rad/s
+					\item La fréquence de coupure à 0 dB fc0 obtenue est de: 3.2Hz
+					\item Le temps de réponse à 5 \% obtenu est de: 0.36s
+					\item Le pourcentage de dépassement est de: 10.75\%
+					\item Le temps de montée (passage de 10\% à 90\% de la valeur finale) est de: 0.11s
+					\item Le temps de montée (temps pour atteindre pour la première fois la valeur finale) est de: 0.11s\\
+				\end{itemize}
 				\pagebreak
 
+				\subsubsection{Conclusion}
+					\par D'après les resultats obtenus, on peut en déduire que plus le rayon R est important, plus la régulation est robuste.
+					Cependant quelques reserves sont à emettre quant à la fiabilité des resulats obtenus au cours de ce compte rendu.
+					En effet, il nous a été indiqué au cours du TP que le gain Kp1 du correcteur de la boucle primaire devait être approximativement égal à 0.207 lorsque que R = 0.3m.
+					Or d'après l'analyse théorique, la valeur de ce gain obtenue est de 0.07.
+					Une erreur est donc certainement présente dans ces calculs et peut fausser les résulats affichés, et donc l'analyse qui en dépend.
+
+
 	\appendix
+		\section{Code Scilab}
+		\begin{center}
+			\includepdf[page=1]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Code.pdf}
+			\includepdf[page=2]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Code.pdf}
+			\includepdf[page=3]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Code.pdf}
+		\end{center}
+		
 		\section{Calcul des paramètres du correcteur de la boucle secondaire}
 		\label{sec:CalcParamCorH2}
 		\newpage
@@ -184,12 +223,6 @@
 		\label{sec:CalcParamCorH1}
 		\newpage
 
-		\section{Code Scilab}
-			\begin{center}
-				\includepdf[page=1]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Code.pdf}
-				\includepdf[page=2]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Code.pdf}
-				\includepdf[page=3]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Code.pdf}
-			\end{center}
 
 
 \end{document}
