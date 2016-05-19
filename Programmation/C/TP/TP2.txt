@@ -1,0 +1,46 @@
+1.1.1
+L'option -Wall permet d'afficher tous les warnings
+L'option -pedantic permet de determiner si le programme est certifié ISO
+
+1.1.2
+On obtient un fichier a.out
+
+1.1.3
+Il faut ajouter l'option -o. Soit gcc exemple.c -Wall -pedantic -o exemple.o
+
+1.1.4
+Si l'on execute la commande echo $? après avoir executer le programme exemple.o, on obtient la valeur de retour du programme.
+
+1.2.1
+Après avoir executé la commande gcc -i exemple1.c > exemple1.i on constate que le nouveau fichier ne contient plus aucun commentaires.
+
+1.2.2
+gcc -S exemple1.i > exemple1.s
+Les lignes qui correspondent dans le fichier le langage assembleur sont:
+movl	$10, -4(%rbp)
+addl	$1, -4(%rbp)
+movl	-4(%rbp), %eax
+movl	%eax, %esi
+movl	$.LC0, %edi
+movl	$0, %eax
+call	printf
+
+1.2.3
+Ils indiquent que l'on utilise une fonction printf non définie dans le programme.
+
+1.2.4
+gcc -lc exemple.o -o exemple
+Le -lc permet d'importer les libraires manquantes (indiquées en warning)
+Car printf est défini dans une librairie standard.
+
+2.1.1
+Il faut utiliser l'option -g afin d'utiliser le debuggeur
+
+2.1.2
+gcc -g -S exemple1.c
+Le fichier assembleur est beaucoup plus long qu'avant.
+
+2.2.2
+Step, au contraire de next, rentre dans les fonctions appelées dans le programme
+
+3.1.1

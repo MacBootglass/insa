@@ -1,0 +1,16 @@
+Question 6
+Le nom de l'entreprise dans les tables GERE et EMPLOIE doit referencer un nom d'entreprise ayant deja été defini dans la table ENTREPRISE_BAT
+La date de l'embauche dans la table EMPLOIE doit être supérieure à la date de création de l'entreprise dans la table ENTREPRISE_BAT -> TRIGGER
+La date de l'embauche dans la table EMPLOIE doit être supérieure à la date de naissance + 16 dans la table EMPLOYE -> TRIGGER
+La date de début de chantier dans la table CHANTIER doit être supérieur à la date de création de l'entrerise dans la table ENTREPISE_BAT -> TRIGGER
+La date de fin de chantier doit être supérieure à celle de début dans la table CHANTIER
+
+Question 12
+Il suffit de nommer les attributs de la vue avec un nom different de ceux de la table ou créer une rule empechant ces modifications
+
+Question 14
+Dans notre cas, cette méthode n'est pas très propre car de nombreux paramètres ne sont pas renseignés
+
+Question 18
+Les droits de consultation et de modification sur les tables utilisées par la values
+Pas sans les droits

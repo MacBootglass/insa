@@ -1,0 +1,56 @@
+http://pagesperso.litislab.fr/~bgauzere/exo52.pdf
+
+1. Oui
+2. Oui
+3. Non
+4. Oui
+5. Non
+6. Non
+
+Si C est executé A est potentiellement executé (extends)
+Si A est executé B est forcément executé (include)
+
+
+
+
+http://pagesperso.litislab.fr/~bgauzere/exo40.pdf
+
+.Titre: Emprunter livre
+.Résumé: Actions entre l'étudiant et l'hotesse permettant d'emprunter un livre au sein de la bibliothèque
+.Acteurs: Etudiant, Hôtesse
+.Scénario standard:
+  - action déclenchement: E veut emprunter le livre
+
+  Action Acteurs        |          Action systeme
+  ______________________|________________________
+  E donne le livre a H  |
+  H renseigne les refs  |
+  dans le systeme       |
+  H renseigne l'ID a S  |
+                        | S verifie que E est valide (-> Exception B)
+                        | S donne la date de retour
+
+  - action fin: obtention de l'emprunt
+.Exceptions: Exception A et B: H garde le livre. E repart sans le livre.
+
+.Pré-conditions: le livre doit être dans la bibliothèque
+.Post-conditions: le livre doit être absent de la bibliothèque
+.Remarques ergonomiques: utilisation d'une douchette
+.Contraintes non fonctionelles:
+  - Temps de réponse: requete < 1s
+  - Fréquence: 10/20 emprunts par heure
+  - Volumétrie: 10000 livres, 500 utilisateurs
+  - Disponibilité: durant les horaires d'ouverture de la bibliothèque
+  - Concurrence:
+  - Intégrité:
+  - Confidentialité:
+  - Sécurité: accés limité aux inscrits
+
+http://pagesperso.litislab.fr/~bgauzere/exo47.pdf
+
+
+
+
+
+©THEOLOGIEN Thibault
+©LeZerhouniVainqueur

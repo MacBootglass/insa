@@ -1,0 +1,31 @@
+1. select * from producteurs order by num_producteur;
+2. select * from producteurs where region like 'Beaujolais';
+3. select nom, prenom from producteurs p , recoltes r where region like 'Beaujolais' and p.num_producteur = r.producteur and r.quantite > 300 order by nom;
+4. select sum(quantite) from recoltes where vin = 12;
+5. select * from recoltes r, vins v where v.num_vin = r.vin;
+6. select sum(quantite), cru from recoltes r, vins v where r.vin = v.num_vin group by cru;
+7. select num_vin from vins where degre > 12 union select vin from recoltes where producteur = 24;
+8. select nom from producteurs p, recoltes r where p.num_producteur = r.producteur and r.vin = 12;
+9. select nom, prenom from producteurs p where (select count(distinct cru) from vins v, recoltes r where r.vin = v.num_vin and p.num_producteur = r.producteur group by r.producteur) >= 3;
+10. select p1.num_producteur, p2.num_producteur from producteurs p1, producteurs p2 where p1.region = p2.region and p1.num_producteur < p2.num_producteur;
+11.1 select producteur, count(distinct qcru)
+     from (select sum(quantite) qcru, r.producteur
+           from recoltes r, vins v
+           where r.vin = v.num_vin
+           group by cru, producteur) foo
+     where qcru > 200
+     group by producteur;
+11.2 select p.num_producteur, p.nom, count(distinct v.cru)
+     from producteurs p, recoltes r, vins v
+     where p.num_producteur = r.producteur and r.vin = v.num_vin and cru in (select cru from vins v2, recoltes r2
+                                                                             where r2.producteur = p.num_producteur and r2.vin = v2.num_vin
+                                                                             group by cru having sum(quantite) > 200)
+     group by p.num_producteur, p.nom;
+12. select p.nom from producteurs p
+    where not exists ( select v.* from vins v
+                       where not exists ( select r.* from recoltes r
+                                          where p.num_producteur = r.producteur and r.vin = v.num_vin));
+13. select p.num_producteur, p.nom
+    from producteurs p where p.num_producteur <> 35 and not exists ( select r1.* from recoltes r1
+                                                                     where r1.producteur = 35 and not exists ( select r2.* from recoltes r2
+                                                                                                               where r1.vin = r2.vin and r2.producteur = p.num_producteur));

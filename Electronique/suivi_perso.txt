@@ -1,0 +1,6 @@
+Premier TP -> Tests de fonctionnement de la CMUCAM4
+Second TP -> Début du développement du code du robot:
+              Partie d'initialisation + déplacements du robot
+              Nombreux tests avec la libraire Thread.h
+Troisième TP -> Finalisation du développement du programme, notament la gestion du bras articulé, (sans librairie Thread.h)
+Quatrième TP -> Fixation de l'arduino et de la CMUCAM4 au robot

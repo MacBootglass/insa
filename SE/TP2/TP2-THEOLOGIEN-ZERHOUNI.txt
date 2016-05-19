@@ -1,0 +1,158 @@
+Thibault THEOLOGIEN
+Youssef ZERHOUNI
+ASI 3
+Système d'exploitation
+
+1.1.3 La documentation du manuel s'obtient à partir de la commande man man
+
+1.1.4 Il est possible de rechercher un mot clé dans le manuel en ajoutant l'option -k. Par exemple man man -k grep va sortir la liste des manuels contenant le mot clé grep.
+On peut obtenir le même resultat en tapannt /motclé une fois dans le manuel.
+Il est egalement possible d'obtenir la presence d'un mot clé dans un manuel à partir de la commande suivante man commande | grep 'mot clé'.
+
+1.1.5 Le man 2 mkdir est le manuel d'utilisation pour la fonction mkdir dans langage c.
+Le man 1 mkdir est le manuel d'utilisation pour la commande bash mkdir.
+Le chiffre (compris entre 1 et 9) indique le numéro de section du man.
+
+
+
+1.2.2 La commande cd ~ permet de retourner sur le repertoire de travail ($HOME)
+La commande cd $HOME et cd sont equivalentes.
+
+ls
+Desktop  Images  public_html  VirtualBox VMs
+
+ls -l
+total 16
+drwxr-xr-x 6 ttheologien 2001 4096 sept. 15 15:10 Desktop
+drwxr-xr-x 2 ttheologien 2001 4096 sept.  3 13:51 Images
+drwxr-xr-x 2 ttheologien 2001 4096 sept.  3 15:55 public_html
+drwxr-xr-x 3 ttheologien 2001 4096 sept.  8 15:36 VirtualBox VMs
+
+1.2.4 La commande cd - permet de retourner dans le répertoire précédent (en terme d'historique).
+Avec la commande cd /tmp
+
+1.2.6 On se situe maintenant dans le répertoire /home$
+
+1.2.7 On se situe maintenant dans le répertoire /$
+La commande cd .. permet d'acceder au répertoire parent (en terme d'arborescence hierarchique)
+
+1.2.8 La commande pwd retourne le chemin d'accès au répertoire courant
+
+1.2.10 La commande mkdir TPSE1 crée un répertoire au nom de TPSE1
+
+1.2.11 Il est possible de créer directement ces répertoire à l'aide de la commande mkdir -p ~/TestASI/SE/TP/Num2
+
+1.2.12 La commande rmdir permet de tenter la suppression TPSE1
+
+1.2.13 Il est possible d'effacer en une commande les répertoires ~/TestASI/SE/TP/Num2 à l'aide de la commande rm -r TestASI
+
+1.2.14 La commande mkdir dossier1 dossier2 .. dossiern permet de créer n dossier dans le même répertoire en une fois
+
+
+
+
+1.3.2 La commande cp /etc/hosts TPSE1/ permet de copier le fichier hosts dans le répertoire TPSE1
+
+1.3.3 La commande cp /etc/hosts TPSE1/hostsBis copiera le fichier hosts dans le répertoire TPSE1 sous le nom de hostBis
+
+1.3.4 Il faut executer la commande suivante cp -a ~/TPSE1 /tmp/
+
+1.3.5 Le dernier paramètre correspond au nom du fichier copié. Si l'on choisi le caractère . le nom du fichier sera identique
+cp /etc/hostname .
+
+1.3.6 Pour déplacer un fichier ou repertoire il faut utiliser la commande mv source repertoire
+
+1.3.7 Il faut executer la commande mv hostsBis hosts2
+
+1.3.8 Il suffit d'executer la commande rm hostname
+
+1.3.9 La commande rm -r TPSE1 permet d'effectuer cette action
+
+
+
+
+
+1.4.1 a) !! execute la dernière commande
+      b) !mk execute la dernière commande mkdir
+      c) !-2 execute l'avant dernière commande
+      d) !5 execute la 5eme commande executé dans l'historique
+
+
+
+
+
+1.5
+du : totalise l'espace disque utilisé par chaque fichier, de façon récursive pour les répertoires.
+Ainsi la commande du executée au sein du répertoire $HOME affiche le stockage utilisé par tous les fichiers qu'il inclus (sous-repertoires inclus)
+
+df: indique l'espace occupé par les systèmes de fichiers
+
+quota: indique l'usage disque et ces limites
+Erreur de segmentation
+
+cat: affiche à la suite le contenu des fichiers indiqués en paramètre
+cat test.txt test2.txt
+Je suis une phrase de test.
+Je suis une seconde phrase de test.
+
+less: affiche le contenu d'un fichier dans une "nouvelle page" du terminal (comme lorsque l'on fait un man par exemple)
+less test.txt
+Je suis une phrase de test.
+
+
+
+
+2.1.1 grep 'ttheologien' comptes
+    a) Champ 1: nom du compte | Champ 6: lien du repetoire de travail ($HOME) | Champ 7: emplacement du shell
+    c) Champ 3: groupe auquel appartient l'utilisateur connecté | Champ 4: Nom du groupe
+
+2.1.2 Il faut utiliser la commande cut -d: -f5 comptes
+
+2.1.3 Ordre alphabétique : sort comptes
+      Ordre alphabétique inversé : sort -r comptes
+
+2.1.4 cut -d: -f5 comptes | grep 'u' | sort
+
+2.1.5 7 premières lignes: cut -d: -f5 comptes | grep 'u' | sort | head -n7
+      7 dernières lignes: cut -d: -f5 comptes | grep 'u' | sort | tail -n7
+
+2.2.1 a) renseigne toutes les lignes contenant un z
+      b) renseigne toutes les lignes contenant un z ou e
+      c) renseigne toutes les lignes contenant un z suivit de n'importe quel caractère puis un e
+      d) renseigne toutes les lignes contenant un z ou x suivit de n'importe quel caractète puis un e
+
+2.2.2 a) grep -E "^A"
+      b) grep -E "e$"
+      c) grep -E "^[AB]"
+      d) grep -E "^[A-D]"
+      e) grep -E "^[A-D]l"
+
+2.2.3 Le symbole + indique une ou plusieurs répétitions du caractère précédent
+      Le symbole * indique zero ou plusieurs répétitions du caractère précédent
+      Le symbole ? indique zero ou une répétition du caractère précédent
+      a) grep -E "ua+"
+      b) grep -E "ua+d"
+      c) grep -E "al|abl"
+      d) grep -E "a.+z"
+
+2.2.4 a) grep -E "a[^l]a"
+      b) grep -E ""
+
+2.3.1 sed "/a/d" comptes
+2.3.2 sed "s/:/#/g" comptes
+2.3.3 sed -e 's/.*/¡¡&/g' comptes
+2.3.4 sed -e 's/.*/¡¡&/g' comptes; sed -e 's/.*/&¿¿/g' comptes
+2.3.5 sed -re 's/^[A-Za-z0-9]*:/XX:/g' comptes
+2.3.6 sed -re 's/([^:]+):([^:]+):([^:]+):([^:]+):([^:]+):(.+)/\5:\2:\3:\4:\1:\6/' comptes
+
+
+
+
+
+3.1.1 La commande hostname renvoie l'identifiant de l'ordinateur sur lequel le terminal est ouverte.
+
+3.1.3 La commande hostname renvoie l'identifiant de l'ordinateur sur lequel la connexion ssh a été effectué.
+
+3.1.4 Les commandes graphiques sont impossible au contraire des commandes "classiques"
+
+3.1.5 La commande who indique tous les utilisateurs connectés sur la machine tandis que la commande whoami indique notre identifiant

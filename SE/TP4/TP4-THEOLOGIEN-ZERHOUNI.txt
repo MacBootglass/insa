@@ -1,0 +1,111 @@
+I Redirections
+
+ls -l > contenudurepertoire crée, ou écrase, un fichier contenudurepertoire contenant le resultat de la commande ls -l soit:
+total 16
+-rw-r--r-- 1 ttheologien 2001    0 oct.  13 15:06 contenudurepertoire
+drwxr-xr-x 8 ttheologien 2001 4096 oct.   5 12:30 Desktop
+drwxr-xr-x 2 ttheologien 2001 4096 oct.   7 13:06 Images
+drwxr-xr-x 2 ttheologien 2001 4096 sept.  3 15:55 public_html
+drwxr-xr-x 3 ttheologien 2001 4096 sept.  8 15:36 VirtualBox VMs
+
+df -h >> contenudurepertoire ajoute au fichier contenudurepertoire le resultat de la commande df -h soit:
+total 16
+-rw-r--r-- 1 ttheologien 2001    0 oct.  13 15:06 contenudurepertoire
+drwxr-xr-x 8 ttheologien 2001 4096 oct.   5 12:30 Desktop
+drwxr-xr-x 2 ttheologien 2001 4096 oct.   7 13:06 Images
+drwxr-xr-x 2 ttheologien 2001 4096 sept.  3 15:55 public_html
+drwxr-xr-x 3 ttheologien 2001 4096 sept.  8 15:36 VirtualBox VMs
+Sys. de fichiers                  Taille Utilisé Dispo Uti% Monté sur
+udev                                3,9G       0  3,9G   0% /dev
+tmpfs                               791M    9,3M  782M   2% /run
+/dev/sda6                           143G     24G  112G  18% /
+tmpfs                               3,9G     13M  3,9G   1% /dev/shm
+tmpfs                               5,0M    4,0K  5,0M   1% /run/lock
+tmpfs                               3,9G       0  3,9G   0% /sys/fs/cgroup
+tmpfs                               3,9G     36K  3,9G   1% /var/tmp
+tmpfs                               3,9G       0  3,9G   0% /var/www
+172.29.0.10:/home/ttheologien       3,7T    1,3T  2,2T  37% /home/ttheologien
+tmpfs                               791M    104K  791M   1% /run/user/107937
+172.29.0.10:/home/mzuber            3,7T    1,3T  2,2T  37% /home/mzuber
+172.29.0.10:/home/yzerhouniabdou    3,7T    1,3T  2,2T  37% /home/yzerhouniabdou
+172.29.0.10:/home/zxu01             3,7T    1,3T  2,2T  37% /home/zxu01
+172.29.0.10:/home/otiamani          3,7T    1,3T  2,2T  37% /home/otiamani
+172.29.0.10:/home/pporche           3,7T    1,3T  2,2T  37% /home/pporche
+172.29.0.10:/home/alecoutre         3,7T    1,3T  2,2T  37% /home/alecoutre
+172.29.0.10:/home/ejules            3,7T    1,3T  2,2T  37% /home/ejules
+172.29.0.10:/home/ahottin           3,7T    1,3T  2,2T  37% /home/ahottin
+172.29.0.10:/home/aduval02          3,7T    1,3T  2,2T  37% /home/aduval02
+172.29.0.10:/home/fdecq             3,7T    1,3T  2,2T  37% /home/fdecq
+172.29.0.10:/home/scarreirapulido   3,7T    1,3T  2,2T  37% /home/scarreirapulido
+172.29.0.12:/srv/opt                126G     65G   55G  55% /nfs/opt
+
+df -h > contenudurepertoire crée, ou écrase, un fichier contenudurepertoire contenant le resultat de la commande df -l soit:
+Sys. de fichiers                  Taille Utilisé Dispo Uti% Monté sur
+udev                                3,9G       0  3,9G   0% /dev
+tmpfs                               791M    9,3M  782M   2% /run
+/dev/sda6                           143G     24G  112G  18% /
+tmpfs                               3,9G     13M  3,9G   1% /dev/shm
+tmpfs                               5,0M    4,0K  5,0M   1% /run/lock
+tmpfs                               3,9G       0  3,9G   0% /sys/fs/cgroup
+tmpfs                               3,9G     36K  3,9G   1% /var/tmp
+tmpfs                               3,9G       0  3,9G   0% /var/www
+172.29.0.10:/home/ttheologien       3,7T    1,3T  2,2T  37% /home/ttheologien
+tmpfs                               791M     72K  791M   1% /run/user/107937
+172.29.0.10:/home/mzuber            3,7T    1,3T  2,2T  37% /home/mzuber
+172.29.0.10:/home/yzerhouniabdou    3,7T    1,3T  2,2T  37% /home/yzerhouniabdou
+172.29.0.10:/home/zxu01             3,7T    1,3T  2,2T  37% /home/zxu01
+172.29.0.10:/home/otiamani          3,7T    1,3T  2,2T  37% /home/otiamani
+172.29.0.10:/home/pporche           3,7T    1,3T  2,2T  37% /home/pporche
+172.29.0.10:/home/alecoutre         3,7T    1,3T  2,2T  37% /home/alecoutre
+172.29.0.10:/home/ejules            3,7T    1,3T  2,2T  37% /home/ejules
+172.29.0.10:/home/ahottin           3,7T    1,3T  2,2T  37% /home/ahottin
+172.29.0.10:/home/aduval02          3,7T    1,3T  2,2T  37% /home/aduval02
+172.29.0.10:/home/fdecq             3,7T    1,3T  2,2T  37% /home/fdecq
+172.29.0.10:/home/scarreirapulido   3,7T    1,3T  2,2T  37% /home/scarreirapulido
+172.29.0.12:/srv/opt                126G     65G   55G  55% /nfs/opt
+
+>> permet d'ajouter à la suite du fichier alors que > ecrasera le fichier
+
+sort < toto
+sort toto -o toto
+
+2.Le systeme de fichiers unix
+
+2.a La commande ls -al retourne tous les fichiers, cachés ou non, contenu dans le repertoire ainsi que leurs détails (droits, propriétaire, date de modification, taile, ...)
+
+groups ttheologien
+ttheologien : groups: impossible de trouver le nom pour le GID 2001
+2001 asi3
+
+alias exe='chmod u+x'
+alias lisible='chmod a+r'
+alias illisible='chmod a-r'
+alias deprotege='chmod u+w'
+alias protege='chmod u-w'
+
+En mofidiant la ligne contenant la commande umask dans le fichier /etc/profile.defs ou en ajoutant la commande umask dans le fichier .bashrc
+
+depuis $HOME
+i-node . : 140247041
+i-node .. : 20776
+
+après cd ..
+i-node . : 20776
+i-node .. : 2
+
+L'i-node du .. depuis le $HOME est identique à celle du . après le cd ..
+
+i-node fic1 : 140248201
+i-node fic2 : 140248948
+i-node fic3 : 140248952
+i-node fic3 : 140248952
+
+Une copie du fichier créée un nouvel i-node tandis qu'un déplacement non.
+
+Le fichier fic1-bis est un lien physique vers fic1, ainsi leurs numéro d'i-node est identique. Une modification de fic1 sera donc répercutée sur fic1-bis
+A la suppression de fic1, fic1-bis perdure
+
+Le fichier fic2-bis est un lien symbolique vers fic2, ainsi leurs numéro d'i-node est différent.
+Une modification de fic2 sera cependant repercutée sur fic2-bis,  et la délétion de fic2 impliquera que fic2-bis ne pourra plus acceder au contenu de fic2.
+En gros fic2-bis pointe sur fic2 mais fic2 n'existe plus.
+Si l'on recréé un fichier fic2, le lien symbolique de fic2-bis sera rétabli

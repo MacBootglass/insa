@@ -1,0 +1,26 @@
+Par défaut, bash lit le fichier .profile lorsqu'il  est  appelé comme interpréteur
+de commandes de connexion. Ce fichier est donc uniquement lancé uniquement lors
+d'une ouverture de session.
+Le fichier .bashrc est quant à lui executé lors de chaque lancement de terminal.
+
+La commande alias énumère tous les alias instancés dans le terminal (depuis le fichier
+.bashrc par exemple)
+Ils permettent de "créer des raccourcis de commande". Par exemple l'alias l='ls -CF'
+permet d'executer la commande ls -CF lorsque l'on saisi la commande l.
+La commande unalias permet de supprimer un alias.
+
+$0 correspond au nom du programme
+$[1-9] au paramètre correspondant
+$? au nombre de paramètres
+
+
+
+Écrire un script qui concaténe puis trie deux fichiers f1 et f2 dans un nouveau fichier f3. Les noms des 3 fichiers sont passés en paramètre du script:
+
+#!/bin/bash
+
+echo $#
+
+if [ $# -eq 3 ]; then
+  cat $1 $2 | sort -o $3
+fi

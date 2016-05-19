@@ -1,0 +1,42 @@
+1.a Les quatre processus sont fils du processus bash. Leurs numéro PID indique leur ordre de création, qui correspond à celui de la commande.
+
+1.b La commande htop affiche tous les processus en cours d'execution sur la machine
+PID, utilisateur, priorité du processus, temps d'execution du processus, ect ...
+htop -u nomUtilisateur
+
+1.c On peut suspendre à l'aide de la commande kill -SIGSTOP PID ou CTRL-Z
+L'ajout du paramètre & permet de lancer directement un processus en arrière plan.
+Pour gérer les "plans" il faut utiliser les commandes fg ou bg, correspondant respectivement à foreground et background
+
+1.d PRI correspond à la priorité attribuée à l'execution du processus
+renice -n 9 PID
+Une erreur de droits survient.
+Il est est donc possible de diminuer la priorité d'un processus mais pas de l'augmenter
+Elle est de 20 (0 dans le cas de l'enoncé)
+Non, cependant un processus est créé avec un priorité identique à celle du bash
+
+
+3.1 chmod u+x essai
+    ./essai
+    Le processus est mort
+
+3.2 Il est arreté
+
+3.3 ./essai > /dev/null &
+
+
+4.a.1 Les processus père et fils ne sont pas toujours executés dans le même ordre.
+
+4.a.2 il faut ajouter la ligne execlp("./essai", "./essai", NULL); dans processus fils.
+
+4.b 2*3 soit 8 processus sont crées par le programme bidon.c
+
+5.1 Il faut executer la commande kill -10 PID depuis un autre terminal
+
+5.2 La commande indique :
+
+------ Tableaux de sémaphores --------
+clef       semid      propriétaire perms      nsems
+0xffffffff 0          ttheologie 666        1
+
+Oui, la semaphore existe encore
