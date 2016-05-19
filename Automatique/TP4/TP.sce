@@ -18,17 +18,17 @@ function [wc0, fc0, margePhase, margeGain] = perf(sys)
 endfunction
 
 function affCara(tr5, tm, tmBis, depassement)
-    disp(tr5, "Temps de réponse en seconde pour laquelle le signal ne dépasse plus  5% de sa valeur finale: ");
-    disp(tm, "Temps de montée en seconde (passage de 10% à 90% de la valeur finale):");
-    disp(tmBis, "Temps de montée en seconde (temps pour atteindre la valeur finale):");
-    disp(depassement, "Dépassement en pourcentage:");
+    printf("\t- Temps de réponse en seconde pour laquelle le signal ne dépasse plus 5 pourcents de sa valeur finale: %f \n", tr5);
+    printf("\t- Temps de montée en seconde (passage de 10 à 90 pourcents de la valeur finale): %f \n", tm);
+    printf("\t- Temps de montée en seconde (temps pour atteindre la valeur finale): %f \n", tmBis);
+    printf("\t- Dépassement en pourcentage: %f \n", depassement);
 endfunction
 
 function affPerf(wc0, fc0,  margePhase, margeGain)
-    disp(wc0,'Pulsation de coupure wc0:');
-    disp(fc0, 'Fréquence de coupure fc0:');
-    disp(margePhase,'Marge de phase :');
-    disp(margeGain,'Marge de gain:');
+    printf('\t- Pulsation de coupure wc0: %f \n', wc0);
+    printf('\t- Fréquence de coupure fc0: %f \n', fc0);
+    printf('\t- Marge de phase : %f \n', margePhase);
+    printf('\t- Marge de gain: %f \n', margeGain);
 endfunction
 
 
@@ -41,67 +41,72 @@ T1 = 0.1;
 T2 = 0.01;
 T3 = 0.001;
 p = %s;
+
 H2 = (K2*(1+T1*p)) / ((1+T2*p)*(1+T3*p));
-t1 = (0:T3/100:100*T3);
+tH2 = (0:T3/100:100*T3);
 
-sys1 = syslin('c', H2);
-y1 = csim('step', t1, sys1);
+sysH2 = syslin('c', H2);
+yH2 = csim('step', tH2, sysH2);
 
-[tm1, tmBis1, tr1, depassement1] = cara(y1, t1, K2);
-[wc0_1, fc0_1, margePhase1, margeGain1] = perf(sys1);
+[tmH2, tmBisH2, trH2, depassementH2] = cara(yH2, tH2, K2);
+[wc0_H2, fc0_H2, margePhaseH2, margeGainH2] = perf(sysH2);
 
 //Affichage
 figure(1);
 title("Réponse indicielle de H2(p)");
 xlabel("Temps (s)");
-ylabel("amplitude");
-plot2d(t1, y1');
+ylabel("Amplitude");
+plot2d(tH2, yH2');
 
 figure(2);
-bode(sys1, 10^-2, 10^4);
+title("Réponse fréquentielle de H2(p)");
+bode(sysH2, 10^-2, 10^4);
 
-disp("Partie 1.1");
-affCara(tr1, tm1, tmBis1, depassement1);
-affPerf(wc0_1, fc0_1, margePhase1, margeGain1);
-disp("--------------------------------------");
+printf("\n--------------------------------------\n");
+printf("Partie 1.1\n");
+printf("--------------------------------------\n");
+affCara(trH2, tmH2, tmBisH2, depassementH2);
+affPerf(wc0_H2, fc0_H2, margePhaseH2, margeGainH2);
+
 
 
 //Partie 1.2
 
 //Calcul
 wc0 = 10000;
-Ti = 0.001;
-Kp = (T3*wc0*sqrt(1+(T2*wc0)^2))/(K2*sqrt(1+(T1*wc0)^2));
-C = Kp*((1+Ti*p)/(Ti*p));
-HBO = H2*C;
-HBF = HBO/(1+HBO);
-t2 = (0:Ti/100:Ti);
+Ti = 10/wc0;
+Kp2 = (T3*wc0*sqrt(1+(T2*wc0)^2))/(K2*sqrt(1+(T1*wc0)^2));
+C2 = Kp2*((1+Ti*p)/(Ti*p));
+H2BO = H2*C2;
+H2BF = H2BO/(1+H2BO);
+tH2BF = (0:Ti/100:Ti);
 
-sys2 = syslin('c', HBF);
-sys3 = syslin('c', HBO);
-y2 = csim('step', t2, sys2);
+sysH2BO = syslin('c', H2BO);
+sysH2BF = syslin('c', H2BF);
 
-KBF = y2(length(y2));
+yH2BF = csim('step', tH2BF, sysH2BF);
 
-[tm2, tmBis2, tr2, depassement2] = cara(y2, t2, KBF);
-[wc0_2, fc0_2, margePhase2, margeGain2] = perf(sys3);
+K2BF = yH2BF(length(yH2BF));
+
+[tmH2BF, tmBisH2BF, trH2BF, depassementH2BF] = cara(yH2BF, tH2BF, K2BF);
+[wc0_H2BO, fc0_H2BO, margePhaseH2BO, margeGainH2BO] = perf(sysH2BO);
 
 //Affichage
 figure(3)
-title("Réponse indicielle de HBF(p)");
-xlabel("Temps (s)");
-ylabel("amplitude");
-plot2d(t2, y2');
+title("Réponse fréquentielle de H2BO(p)");
+bode(sysH2BO);
 
 figure(4)
-bode(sys3);
+title("Réponse indicielle de H2BF(p)");
+xlabel("Temps (s)");
+ylabel("Amplitude");
+plot2d(tH2BF, yH2BF');
 
-
-
-disp("Partie 1.2");
-affCara(tr2, tm2, tmBis2, depassement2);
-affPerf(wc0_2, fc0_2, margePhase2, margeGain2);
-disp("--------------------------------------");
+printf("\n--------------------------------------\n");
+printf("Partie 1.2\n");
+printf("--------------------------------------\n");
+affCara(trH2BF, tmH2BF, tmBisH2BF, depassementH2BF);
+affPerf(wc0_H2BO, fc0_H2BO, margePhaseH2BO, margeGainH2BO);
 
 
 //Partie 2.1
@@ -111,82 +116,93 @@ K1 = 93;
 m = 0.12;
 w0 = 1.8;
 H1 = K1/(1+(2*m*p)/w0+(p^2)/(w0^2));
-t3 = (0:w0/10:10*w0);
+tH1 = (0:w0/10:10*w0);
 
-sys5 = syslin('c', H1);
-y3 = csim('step', t3, sys5);
+sysH1 = syslin('c', H1);
+yH1 = csim('step', tH1, sysH1);
 
-[wc0_3, fc0_3, margePhase3, margeGain3] = perf(sys5);
-clear sys2
-sys2 = syslin('c', HBF);
-[wc0_4, fc0_4, margePhase4, margeGain4] = perf(sys2);
+[wc0_H1, fc0_H1, margePhaseH1, margeGainH1] = perf(sysH1);
+[wc0_H2BF, fc0_H2BF, margePhaseH2BF, margeGainH2BF] = perf(sysH2BF);
 
 
 //Affichage
+figure(5)
+title("Réponse fréquentielle de H1(p)");
+bode(sysH1);
+
 figure(6)
-bode(sys5);
+title("Réponse fréquentielle de H2BF(p)");
+bode(sysH2BF, 10^-2, 10^4);
 
-figure(7)
-bode(sys2);
-
-disp("Partie 2.1");
-//affCara(tr2, tm2, tmBis2, depassement2);
-disp("Performances H1:");
-affPerf(wc0_3, fc0_3, margePhase3, margeGain3);
-disp("Performances H2BF:");
-affPerf(wc0_4, fc0_4, margePhase4, margeGain4);
-disp("--------------------------------------");
+printf("\n--------------------------------------\n");
+printf("Partie 2.1\n");
+printf("--------------------------------------\n");
+printf("Performances H1:\n");
+affPerf(wc0_H1, fc0_H1, margePhaseH1, margeGainH1);
+printf("Performances H2BF:\n");
+affPerf(wc0_H2BF, fc0_H2BF, margePhaseH2BF, margeGainH2BF);
 
 
-//Partie 2.2
 
-//Calcul
-m = 0.12;
-//m = 0.038;
-K1 = 93;
-//K1 = 172;
-w0 = 1.8;
-//w0 = 2.25;
- 
-wc0 = 6.925;
-Ti = 10/wc0;
-phiH1 = -atan(((2*m*wc0)/(w0))/(1-(wc0/w0)^2));
-mPhase = (60/180)*%pi;
-Td = tan(mPhase - %pi/2 - atan(10) - phiH1)/wc0;
-numKp = abs(Ti*wc0)*sqrt(((2*m*wc0)/w0)^2 + (1-(wc0/w0)^2)^2);
-denKp = abs(K1)*sqrt(1+(Ti*wc0)^2)*sqrt(1+(Td*wc0)^2);
-Kp = numKp/denKp;
-Kp = 0.207;
-t4 = (0:Ti/100:Ti);
+//Partie 2.2 et 2.3
+function partie2_3(m, K1, w0, wc0, fig, affFig)
+    //Calcul
+    Ti = 10/wc0;
+    phiH1 = -atan(((2*m*wc0)/(w0))/(1-(wc0/w0)^2));
+    mPhase = (60/180)*%pi;
+    
+    Td = tan(mPhase - %pi/2 - atan(10) - phiH1)/wc0;
+    num = abs(Ti*wc0)*sqrt(((2*m*wc0)/w0)^2 + (1-(wc0/w0)^2)^2);
+    den = abs(K1)*sqrt(1+(Ti*wc0)^2)*sqrt(1+(Td*wc0)^2);
+    Kp1Bis = num/den;
+    Kp1 = 0.207;
+    t = (0:Ti/100:5*Ti);
+    
+    C1 = (Kp1Bis * (1+Td*p) * (1+Ti*p)) /(Ti*p);
+    H1BO = H1*C1;
+    H1BF = H1BO/(1+H1BO);
+    
+    sysH1BO = syslin('c', H1BO);
+    sysH1BF = syslin('c', H1BF);
+    
+    yH1BF = csim('step', t, sysH1BF);
+    
+    KH1BF = yH1BF(length(yH1BF));
+    
+    [tm, tmBis, tr, depassement] = cara(yH1BF, t, KH1BF);
+    [wc_0, fc0, margePhase, margeGain] = perf(sysH1BO);
+    
+        
+    //Affichage
+    printf("\nSynthèse du régulateur de traction pour m=%f, K1=%f, w0=%f \n", m, K1, w0);
+    printf("\t- phiH1: %f \n", phiH1);
+    printf("\t- Ti: %f \n", Ti);
+    printf("\t- Td: %f \n", Td);
+    printf("\t- Kp1 trouvé: %f\n", Kp1Bis);
 
-C1 = (Kp * (1+Td*p) * (1+Ti*p)) /(Ti*p);
-H1BO = H1*C1;
-H1BF = H1BO/(1+H1BO);
-KH1BO = Kp * KBF * K1;
-KH1BF = KH1BO / (1 + KH1BO);
+    affCara(tr, tm, tmBis, depassement);
+    affPerf(wc_0, fc0, margePhase, margeGain);
 
+    if  affFig == 1 then
+        figure(fig(1));
+        title("Réponse fréquentielle de H1B0(p)");
+        bode(sysH1BO);
+        
+        figure(fig(2));
+        title("Réponse indicielle de H1BF(p)");
+        xlabel("Temps (s)");
+        ylabel("Amplitude");
+        plot2d(t, yH1BF');
+        plot2d(t, KH1BF*ones(1,length(yH1BF)), 21);
+    end
+endfunction
 
-sys6 = syslin('c', H1BO);
-sys7 = syslin('c', H1BF);
+printf("\n--------------------------------------\n");
+printf("Partie 2.2 et 2.3\n");
+printf("--------------------------------------\n");
 
-y4 = csim('step', t4, sys7);
+partie2_3(0.12, 93, 1.8, 6.925, [7,8], 1);
 
-[tm4, tmBis4, tr4, depassement4] = cara(y4, t4, KH1BF);
-[wc0_5, fc0_5, margePhase5, margeGain5] = perf(sys6);
+partie2_3(0.038, 172, 2.25, 6.925, [9,10], 1);
 
-
-//Affichage
-disp("Partie 2.2");
-disp(phiH1, "phiH1:");
-disp(Ti, "Ti:");
-disp(Td, "Td:");
-disp(Kp, "Kp:");
-
-affCara(tr4, tm4, tmBis4, depassement4);
-affPerf(wc0_5, fc0_5, margePhase5, margeGain5);
-
-figure(8)
-bode(sys7);
-
-figure(9)
-plot2d(t4, y4');
+partie2_3(0.27, 74.7, 1.1, 6.925, [11, 12], 1);

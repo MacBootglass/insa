@@ -5,69 +5,224 @@
 \usepackage{graphicx}
 \usepackage{pdfpages}
 
-\title{Automatique - Compte rendu TP3}
-\author{Thibault THEOLOGIEN}
+\title{Automatique - Compte rendu TP4}
+\author{
+	Thibault THEOLOGIEN\\
+	INSA Rouen\\
+	ASI 3.2 - Groupe 1.1
+}
 
 \begin{document}
 	\maketitle
 	\tableofcontents
 	\newpage
 
+	\par L'objectif de ce TP est d'analyser le comportement d'un enrouleur/dérouleur de bande afin de procéder à la régulation de vitesse de bande et de force de traction de bande.
+	Les deux boucles de vitesse et de traction sont imbriquées.
+
 	\section{Etude de la boucle secondaire}
 		\subsection{Etude des caractéristiques de H2(p)}
+			\par Visualisation de la réponse indicielle de H2(p):
 			\begin{center}
 				\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Images/Figure1.png}
 			\end{center}
 
+			\par On obtient les mesures suivantes:
 			\begin{itemize}
 				\item Le temps de réponse à 5 \% obtenu est de: 52.9ms
 				\item Le pourcentage de dépassement est de: 689.45\%
 				\item Le temps de montée (passage de 10\% à 90\% de la valeur finale) est de: 1.5ms
 				\item Le temps de montée (temps pour atteindre pour la première fois la valeur finale) est de: 0.2ms
 			\end{itemize}
+			On peut en déduire que le couple appliqué à la bande est 600 fois trop important.
+			\pagebreak
 
-			Le couple appliqué à la bande est 600 fois trop important.
-
+			\par Visualisation de la réponse fréquentielle de H2(p):
 			\begin{center}
 				\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Images/Figure2.png}
 			\end{center}
 
+			\par On obtient les mesures suivantes:
 			\begin{itemize}
 				\item La marge de phase obtenue est de: 89.68\degre
 				\item La marge de gain obtenue est infinie.
 				\item La fréquence de coupure à 0 dB fcO obtenue est de: 31830Hz
 			\end{itemize}
+			\pagebreak
 
 		\subsection{Synthèse du régulateur de couple}
-			Afin que la boucle secondaire puisse satisfaire les exigences du cahier des charges on va utiliser un correcteur PI.\\
-			En effet on souhaite avoir une marge de phase de 90\degre, un temps de réponse de 0,4 ms et une erreur statique nulle. \\
-			La marge de phase étant déjà correcte, il ne reste donc qu'à régler les deux autres paramètres. \\
-			Pour obtenir une erreur statique nulle, il nous faut un intégrateur. Le correcteur PI permet de répondre à ces exigences: il permet de diminuer le temps de réponse et d'annuler l'erreur statique sans changer la marge de phase.
-			\newpage
-			Calcul des paramètres du correcteur:
+			\par Afin que la boucle secondaire puisse satisfaire les exigences du cahier des charges on va utiliser un correcteur PI.
+			En effet on souhaite avoir une marge de phase de 90\degre, un temps de réponse de 0,4 ms et une erreur statique nulle.
+			La marge de phase étant déjà correcte, il ne reste donc qu'à régler les deux autres paramètres.
+			Pour obtenir une erreur statique nulle, il nous faut un intégrateur. Le correcteur PI permet de répondre à ces exigences: il permet de diminuer le temps de réponse et d'annuler l'erreur statique sans changer la marge de phase.\\
+			Pour le calcul des paramètres du correcteur se référer à l'annexe \ref{sec:CalcParamCorH2} à la page \pageref{sec:CalcParamCorH2}.\\
 
+			\par Visualisation de la réponse fréquentielle de la boucle ouverte corrigée H2BO(p):
 			\begin{center}
 				\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Images/Figure3.png}
 			\end{center}
 
-			On obtient les paramètres suivant:
+			\par On obtient les mesures suivant:
 			\begin{itemize}
 				\item La marge de phase obtenue est de: 89.68\degre
 				\item La marge de gain obtenue est infinie.
 				\item Le pulsation de coupure wc0 obtenue est de: 200000rad/s
-				\item La fréquence de coupure à 0 dB fcO obtenue est de: 31830Hz
+				\item La fréquence de coupure à 0 dB fc0 obtenue est de: 31830Hz
 			\end{itemize}
+			La marge de phase obtenue étant très proche de 90 \degre on peut en conclure que les performances demandées au cahier des charges sont respectées.\\
 
-	\newpage
+			\par Visualisation de la réponse indicielle de la boucle secondaire asservie H2BF(p):
+			\begin{center}
+				\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Images/Figure4.png}
+			\end{center}
+
+			\par On obtient les mesures suivantes:
+			\begin{itemize}
+				\item Le temps de réponse à 5 \% obtenu est de: 0.29ms
+				\item Le pourcentage de dépassement est de: 0\%
+				\item Le temps de montée (passage de 10\% à 90\% de la valeur finale) est de: 0.22ms
+				\item Le temps de montée (temps pour atteindre pour la première fois la valeur finale) est de: 1ms
+			\end{itemize}
+			Les résultats étant très proches des exigences du cahier des charges, et l'erreur statique étant nulle, on peut considérer que les exigences sont satisfaites.\\
+			\pagebreak
 
 	\section{Etude de la boucle principale}
 		\subsection{Etude des caractéristiques de la boucle principale}
+			\par Visualisation de la réponse fréquentielle de H1(p):
+			\begin{center}
+				\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Images/Figure5.png}
+			\end{center}
+
+			\par On obtient les mesures suivant:
+			\begin{itemize}
+				\item La marge de phase obtenue est de: 178.56\degre
+				\item La marge de gain obtenue est infinie.
+				\item Le pulsation de coupure wc0 obtenue est de: 17.49/s
+				\item La fréquence de coupure à 0 dB fc0 obtenue est de: 2.78Hz\\
+			\end{itemize}
+
+			\pagebreak
+
+			\par Visualisation de la réponse fréquentielle de la boucle fermée H2BF(p):
+			\begin{center}
+				\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Images/Figure6.png}
+			\end{center}
+
+			\par H2BF agit comme un passe-bas de fréquence de coupure d'environ 1000 Hz alors que celle de H1 est seulement de 2,77 Hz.
+			La bande passante de H2BF est beaucoup plus grande que celle de H1.
+			La boucle interne est donc plus rapide que la boucle extérieure.
+			H1 traite les basses fréquences c'est pourquoi H2BF peut être approximée par un gain devant H1, ce qui donnera une fonction de transfert sans retard.
+			Ce gain est de 1 puisque le signal est inchangé de 0 à 1000 Hz (environ).
+			La boucle secondaire permet de stabiliser le système si des perturbations apparaissent.
+			Actuellement, si le couple subit des perturbations, le système a des difficultés pour retrouver sa stabilité donc la boucle secondaire n'influence pas assez le système.
+			\pagebreak
 
 		\subsection{Synthèse du régulateur de traction}
+			\label{sub:syntRegTrac}
+			\par Afin de pouvoir agir sur les paramètres exigés par le cahier des charges (pourcentage de dépassement maximal, temps de montée, erreur statique), il nous faut utiliser un correcteur PI ou un correcteur PID.
+			Or le correcteur PI ne peut agir que sur un seul paramètre à la fois.
+			Nous optons donc pour un correcteur PID.\\
+			Pour le calcul des paramètres du correcteur se référer à l'annexe \ref{sec:CalcParamCorH1} à la page \pageref{sec:CalcParamCorH1}.\\
+
+			\par Visualisation de la réponse fréquentielle de la boucle ouverte H1BO(p):
+			\begin{center}
+				\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Images/Figure7.png}
+			\end{center}
+
+			\par On obtient les mesures suivant:
+			\begin{itemize}
+				\item La marge de phase obtenue est de: 120\degre
+				\item La marge de gain obtenue est infinie.
+				\item Le pulsation de coupure wc0 obtenue est de: 6.92rad/s
+				\item La fréquence de coupure à 0 dB fc0 obtenue est de: 1.10Hz\\
+			\end{itemize}
+			\pagebreak
+
+			\par Visualisation de la réponse fréquentielle de la boucle fermée H1BF(p):
+			\begin{center}
+				\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Images/Figure8.png}
+			\end{center}
+
+			\par On obtient les mesures suivantes:
+			\begin{itemize}
+				\item Le temps de réponse à 5 \% obtenu est de: 1.75s
+				\item Le pourcentage de dépassement est de: 17.4\%
+				\item Le temps de montée (passage de 10\% à 90\% de la valeur finale) est de: 0.27s
+				\item Le temps de montée (temps pour atteindre pour la première fois la valeur finale) est de: 0.26s\\
+			\end{itemize}
+			\par Le temps de montée a bien été corrigé, cependant il est peut être un peu trop faible par rapport au exigences du cahier des charges.
+			Le pourcentage de dépassement est quant à lui légèrement supérieur aux exigences.
+			Concernant l'erreur statique, nous pouvons constater qu'elle est nulle, et répond donc par conséquent aux exigences.
+			Nous pouvons donc en déduire que le correcteur ne répond pas totalement aux exigences du cahier des charges, mais s'en approche fortement.
+			Il est cependant important de prendre en compte le fait que les approximations successives effectuées au cours de ce TP n'ont certainement pas étés sans conséquences.
+			\pagebreak
 
 		\subsection{Sensibilité de la régulation}
-	\newpage
-	\section{Code Scilab}
+			\subsubsection{Cas ou R vaut 0.2m}
+				\par Visualisation de la réponse fréquentielle de la boucle fermée H1BF(p):
+				\begin{center}
+					\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Images/Figure10.png}
+				\end{center}
+
+				\par On obtient les performances suivantes:
+				\begin{itemize}
+					\item La marge de phase obtenue est de: 135\degre
+					\item La marge de gain obtenue est infinie.
+					\item Le pulsation de coupure wc0 obtenue est de: 3.56rad/s
+					\item La fréquence de coupure à 0 dB fc0 obtenue est de: 0.57Hz
+					\item Le temps de réponse à 5 \% obtenu est de: 4.21s
+					\item Le pourcentage de dépassement est de: 12.2\%
+					\item Le temps de montée (passage de 10\% à 90\% de la valeur finale) est de: 0.52s
+					\item Le temps de montée (temps pour atteindre pour la première fois la valeur finale) est de: 0.55s\\
+				\end{itemize}
+				\pagebreak
+
+			\subsubsection{Cas ou R vaut 0.3m}
+				\par Ce cas a déjà été traité dans la partie 2.2: se référer à la partie \ref{sub:syntRegTrac} page \pageref{sub:syntRegTrac}.
+
+			\subsubsection{Cas ou R vaut 0.5m}
+				\par Visualisation de la réponse fréquentielle de la boucle fermée H1BF(p):
+				\begin{center}
+					\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Images/Figure12.png}
+				\end{center}
+
+				\par On obtient les performances suivantes:
+				\begin{itemize}
+					\item La marge de phase obtenue est de: 101\degre
+					\item La marge de gain obtenue est infinie.
+					\item Le pulsation de coupure wc0 obtenue est de: 20.12rad/s
+					\item La fréquence de coupure à 0 dB fc0 obtenue est de: 3.2Hz
+					\item Le temps de réponse à 5 \% obtenu est de: 0.36s
+					\item Le pourcentage de dépassement est de: 10.75\%
+					\item Le temps de montée (passage de 10\% à 90\% de la valeur finale) est de: 0.11s
+					\item Le temps de montée (temps pour atteindre pour la première fois la valeur finale) est de: 0.11s\\
+				\end{itemize}
+				\pagebreak
+
+				\subsubsection{Conclusion}
+					\par D'après les resultats obtenus, on peut en déduire que plus le rayon R est important, plus la régulation est robuste.
+					Cependant quelques reserves sont à emettre quant à la fiabilité des resulats obtenus au cours de ce compte rendu.
+					En effet, il nous a été indiqué au cours du TP que le gain Kp1 du correcteur de la boucle primaire devait être approximativement égal à 0.207 lorsque que R = 0.3m.
+					Or d'après l'analyse théorique, la valeur de ce gain obtenue est de 0.07.
+					Une erreur est donc certainement présente dans ces calculs et peut fausser les résulats affichés, et donc l'analyse qui en dépend.
+
+
+	\appendix
+		\section{Code Scilab}
+		\begin{center}
+			\includepdf[page=1]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Code.pdf}
+			\includepdf[page=2]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Code.pdf}
+			\includepdf[page=3]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP4/Code.pdf}
+		\end{center}
+		
+		\section{Calcul des paramètres du correcteur de la boucle secondaire}
+		\label{sec:CalcParamCorH2}
+		\newpage
+
+		\section{Calcul des paramètres du correcteur de la boucle principale}
+		\label{sec:CalcParamCorH1}
+		\newpage
+
 
 
 \end{document}
