@@ -1,0 +1,172 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+
+
+\title{Automatique - Compte rendu DM2}
+\author{Thibault THEOLOGIEN\\
+        INSA Rouen\\
+        ASI 3.2 - Groupe 1.1}
+
+\begin{document}
+	\maketitle
+	\tableofcontents
+	\newpage
+
+  \section{Définition portrait de phase}
+  \label{sec:Définition portrait de phase}
+    \newpage
+
+  \section{Méthode des isoclines}
+  \label{sec:Méthode des isoclines}
+    \newpage
+
+  \section{Extraction des informations utiles}
+  \label{sec:Extraction des informations utiles}
+    \newpage
+
+  \section{Exemples Matlab}
+  \label{sec:Exemples Matlab}
+
+    \subsection{Circuit RLC}
+    \label{sub:Circuit RLC}
+    \[u(t) = R \times i(t) + C \times \frac{\mathrm{d}i(t)}{\mathrm{d}t} + V_c(t)\]
+    avec :
+    \[i(t) = \frac{\mathrm{d}q}{\mathrm{d}t} = C \times \frac{\mathrm{d}V_c(t)}{\mathrm{d}t}\]
+    \[V_c(t) = \frac{1}{C} \int_{\infty}^{-\infty}i(\tau)\mathrm{d}\tau\]
+    \[\left\{
+              \begin{array}{ll}
+                x_1 = V_c(t)\\
+                x_2 = i(t)
+              \end{array}
+      \right.
+      \Rightarrow
+      \left\{
+              \begin{array}{ll}
+                \dot{x_1} = x_2\\
+                \dot{x_2} = \frac{U}{L} - \frac{R}{L} \times x_2 - \frac{x_1}{L}
+              \end{array}
+      \right.
+      \]
+    soit :
+    \[ A = \left[
+                  \begin{array}{cc}
+                    O             & \frac{1}{C}\\
+                    -\frac{1}{L}  & -\frac{R}{L}
+                  \end{array}
+            \right],
+        B = \left[
+                  \begin{array}{c}
+                    O\\
+                    \frac{1}{L}
+                  \end{array}
+            \right],
+        c = \left[
+                  \begin{array}{cc}
+                    1 & 0\\
+                    0 & 1
+                  \end{array}
+            \right],
+        D = [0]
+    \]
+
+    \begin{center}
+      \includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/DM2/RLC.png}
+    \end{center}
+
+    \newpage
+
+    \subsection{Système multi-agent}
+    \label{sub:Système multi-agent}
+      \[
+        \dot{X} = -L \times X + B \times u
+      \]
+      avec:
+      \[B =
+        \left[
+              \begin{array}{cccc}
+                0 & 0 & 0 & 1
+              \end{array}
+        \right]'\]
+      \[X =
+        \left[
+              \begin{array}{cccc}
+                x_1 & x_2 & x_3 & x_4
+              \end{array}
+        \right]'\]
+      \[L = D - A =
+        \left[
+              \begin{array}{cccc}
+                1 & 0 & 0 & 0\\
+                0 & 2 & 0 & 0\\
+                0 & 0 & 1 & 0\\
+                0 & 0 & 0 & 2
+              \end{array}
+        \right] -
+        \left[
+              \begin{array}{cccc}
+                0 & 0 & 0 & 1\\
+                1 & 0 & 0 & 1\\
+                0 & 1 & 0 & 0\\
+                0 & 1 & 1 & 0
+              \end{array}
+        \right] =
+        \left[
+              \begin{array}{cccc}
+                1 &  0 & 0 & -1\\
+               -1 &  2 & 0 & -1\\
+                0 & -1 & 1 &  0\\
+                0 & -1 &-1 &  2
+              \end{array}
+        \right]\]
+      soit:
+      \[
+        \left[
+              \begin{array}{c}
+                \dot{x_1}\\
+                \dot{x_2}\\
+                \dot{x_3}\\
+                \dot{x_4}
+              \end{array}
+        \right] =
+        \left[
+              \begin{array}{c}
+                x_4 - x_1\\
+                x_1 - 2 \times x_2 + x_4\\
+                x_2 - x_3\\
+                x_2 + x_3 - 2 \times x_4 + u
+              \end{array}
+        \right]\]
+        \par Nous avons donc quatre variables d'état, or nous ne pouvons calculer le portrait de phase qu'à partir de deux variables d'état.
+        Il nous est par conséquent impossible de dessiner le portrait de phase.
+      \newpage
+
+    \subsection{Système pendule simple}
+    \label{sub:Système pendule simple}
+      \[u = I^2 \times \ddot{\theta} + M \times g * L * \sin{\theta}\]
+      soit:
+      \[
+        \left\{
+          \begin{array}{ll}
+            x_1 = 0\\
+            x_2 = \dot{\theta}
+          \end{array}
+        \right.
+        \Rightarrow
+        \left\{
+          \begin{array}{ll}
+            \dot{x_1} = x_2\\
+            \dot{x_2} = \ddot{\theta} = \frac{u - M \times g \times \sin{\theta}}{I^2}
+          \end{array}
+        \right.
+      \]
+
+      \begin{center}
+        \includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/DM2/Pendule.png}
+      \end{center}
+
+      \newpage
+
+\end{document}
