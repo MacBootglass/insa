@@ -3,6 +3,10 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead[L]{Thibault THEOLOGIEN}
+\fancyhead[R]{Automatique - INSA Rouen - ASI 3.2}
 
 \title{Automatique - Compte rendu DM2}
 \author{Thibault THEOLOGIEN\\
@@ -24,7 +28,7 @@
     On utilise le concept d'homéomorphisme \footnotemark[4] pour déterminer si des portraits de phase représentent le même comportement dynamique qualificatif, et ce en comparant leurs analogies.
     Une autre représentation graphique présente les trajectoires-types du système par des flèches, les états d'équilibre stables par des points et les états d'équilibre instables par des cercles.
     Les axes correspondant aux différentes variables d'état du système.
-    
+
     \footnotetext[1]{espace abstrait dont les coordonnées sont les variables dynamiques du système étudié.}
     \footnotetext[2]{ensemble ou espace vers lequel un système évolue de façon irréversible en l'absence de perturbations.}
     \footnotetext[3]{trajectoire fermée dans l'espace des phases, telle qu'au moins une autre trajectoire spirale à l'intérieur lorsque le temps tend vers +$\infty$.}
@@ -33,10 +37,58 @@
 
   \section{Méthode des isoclines}
   \label{sec:Méthode des isoclines}
+    Le tracé par la méthode des isoclines s'applique toujours à un système autonome de dimension deux, donc de la forme:
+    \[\left\{
+              \begin{array}{ll}
+                \dot{x} = f(x,y)\\
+                \dot{y} = g(x,y)
+              \end{array}
+      \right.
+    \]
+
+    \subsection{Isoclines horizontales}
+    \label{subs:Isoclines horizontales}
+      \par \textbf{Définition}: On appelle isocline horizontale l'ensemble $I$ des points $(x,y)$ tels que $g(x,y) = 0$.\\
+      \par Soit $M$ un point de $I$.
+      Si $M$ n'est pas un point stationnaire, en ce point on a $f(x,y) \neq 0$.
+      La trajectoire passant par $M$ a une tangente horizontale.
+      Elle est parcourue de gauche à droite si $f(x,y) > 0$ , de droite à gauche si $f(x,y) < 0$ .
+      L'ensemble $I$ est constitué en général d'une ou de plusieurs courbes, qui partagent le plan en régions dans lesquelles le signe de $g(x,y)$ reste constant.
+
+    \subsection{Isoclines verticales}
+    \label{subs:Isoclines verticales}
+      \par \textbf{Définition}: On appelle isocline verticale l'ensemble $J$ des points $(x,y)$ tels que $f(x,y) = 0$.\\
+      \par Soit $M$ un point de $J$.
+      Si $M$ n'est pas un point stationnaire, en ce point on a $g(x,y) \neq 0$.
+      La trajectoire passant par $M$ a une tangente verticale.
+      Elle est parcourue de bas en haut si $g(x,y) > 0$, de haut en bas si $g(x,y) < 0$.
+      L'ensembe $J$ est constitué en général d'une ou de plusieurs courbes, qui partagent le plan en régions dans lesquelles le signe de $f(x,y)$ reste constant.
+
+    \subsection{Tracé}
+    \label{sub:Tracé}
+      \par Quand on trace à la fois $I$ et $J$, on partage le plan en régions qui sont de quatre types :
+      \begin{itemize}
+        \item régions où $f$ et $g$ sont positifs : dans cette région les trajectoires se dirigent, pour   croissant, vers le haut et la droite
+        \item régions où $f$ est positif et $g$ négatif : les trajectoires se dirigent vers le bas et la droite
+        \item régions où $f$ est négatif et $g$ positif : les trajectoires se dirigent vers la gauche et le haut
+        \item régions où $f$ et $g$ sont négatifs : les trajectoires se dirigent vers le bas et la gauche
+      \end{itemize}
+
+      \par A ce stade, on peut déjà avoir une idée du portrait de phase en traçant des \"trajectoires\" compatibles avec ces renseignements.
+      De plus, les points stationnaires se trouvent à l'intersection de $I$ et de $J$.
+
+      \begin{figure}[h]
+        \caption{Illustration du tracé par la méthode des isoclines}
+        \centering
+        \includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/DM2/Isoclines.png}
+      \end{figure}
+
     \newpage
 
   \section{Extraction des informations utiles}
   \label{sec:Extraction des informations utiles}
+    Comme il l'a été indiqué dans sa définition (cf Partie \ref{sec:Définition portrait de phase} page \pageref{sec:Définition portrait de phase}),
+    l'analyse d'un portrait de phase permet de déterminer d'un attracteur (point de convergence), d'un répulseur (point de divergence) ou d'un cycle limite pour un système donné dans des conditions initiales détérminées.
     \newpage
 
   \section{Exemples Matlab}
@@ -84,9 +136,11 @@
         D = [0]
     \]
 
-    \begin{center}
+    \begin{figure}[h]
+      \caption{Tracé du portrait de phase du circuit RLC}
+      \centering
       \includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/DM2/RLC.png}
-    \end{center}
+    \end{figure}
 
     \newpage
 
@@ -175,7 +229,10 @@
         \right.
       \]
 
-      \begin{center}
+      \begin{figure}[h]
+        \caption{Tracé du portrait de phase du pendule simple}
+        \centering
         \includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/DM2/Pendule.png}
-      \end{center}
+      \end{figure}
+
 \end{document}
