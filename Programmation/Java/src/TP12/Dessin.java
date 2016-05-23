@@ -37,6 +37,7 @@ public class Dessin extends JPanel implements Observer{
 
   // TODO dessine les figures contenues dans les données
   public void paintComponent(Graphics gc) {
+    super.paintComponent(gc);
     for (Iterator i = this.dessinables.iterator(); i.hasNext();)
       ((Dessinable)i.next()).dessine(gc);
   }

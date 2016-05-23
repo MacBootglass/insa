@@ -35,6 +35,6 @@ public class Cercle extends Figure {
 
   public void dessine(Graphics gc) {
     gc.setColor(getCouleur());
-    gc.fillOval(x, y, rayon, rayon);
+    gc.fillOval(x-rayon, y-rayon, 2*rayon, 2*rayon);
   }
 }

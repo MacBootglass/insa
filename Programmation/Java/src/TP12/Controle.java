@@ -3,6 +3,7 @@ package TP12;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.event.*;
 
 public class Controle extends JPanel {
 
@@ -38,7 +39,7 @@ public class Controle extends JPanel {
     add(dess_rect);
 
     // TODO ajouter le listener lié à la sélection du radio rectangle
-    dess_rect.addItemListener(new GestionOutil(new DessineRectangleListener(this.dessinables)));
+    dess_rect.addItemListener(new GestionOutil(new DessineRectangleListener(this.dessinables, this.dessin)));
 
     // zone de glue
     add(Box.createGlue());
@@ -49,7 +50,11 @@ public class Controle extends JPanel {
     add(efface);
 
     // TODO ajouter le listener lié à l'effacement par le bouton efface
-
+    efface.addActionListener( new ActionListener() {
+    	public void actionPerformed(ActionEvent e) {
+    	  dessinables.vider();
+    	}
+    });
 
 
 
@@ -70,18 +75,22 @@ public class Controle extends JPanel {
   // gestion des outils activation/desactivation
   private class GestionOutil implements ItemListener {
 
-    private MouseListener listener;
-    public GestionOutil(MouseListener _listener) {
+    private MouseInputListener listener;
+
+    public GestionOutil(MouseInputListener _listener) {
       this.listener = _listener;
     }
 
     public void itemStateChanged(ItemEvent e) {
-      if (e.getStateChange() == ItemEvent.SELECTED)
+      if (e.getStateChange() == ItemEvent.SELECTED) {
         dessin.addMouseListener(this.listener);
-      else
+        dessin.addMouseMotionListener(this.listener);
+      }
+      else {
         dessin.removeMouseListener(this.listener);
+        dessin.removeMouseMotionListener(this.listener);
+      }
     }
-
   }
 
 
