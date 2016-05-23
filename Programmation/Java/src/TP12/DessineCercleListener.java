@@ -5,7 +5,7 @@ import java.awt.event.*;
 
 // TODO Listener qui modifie les données (dessinables) lors d'un click dans la zone de dessin
 public class DessineCercleListener extends MouseAdapter {
-  private final static int MAX_LENGTH = 50;
+  private final static int MAX_LENGTH = 200;
   private DessinablesData dessinables;
 
   public DessineCercleListener(DessinablesData dessinables) {

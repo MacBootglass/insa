@@ -14,7 +14,7 @@ public class Controle extends JPanel {
     dessinables = _dessinables;
 
     // TODO associe les données (dessinables) avec le dessin
-
+    this.dessin.setModel(this.dessinables);
 
     // assignation du layout manager
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -29,7 +29,7 @@ public class Controle extends JPanel {
     add(dess_cercle);
 
     // TODO ajouter le listener lié à la sélection du radio cercle
-
+    dess_cercle.addItemListener(new GestionOutil(new DessineCercleListener(this.dessinables)));
 
     // JRadioButton rectangle, ajout au panneau, et assignation d'un listener
     JRadioButton dess_rect = new JRadioButton("Rectangle", false);
@@ -38,6 +38,7 @@ public class Controle extends JPanel {
     add(dess_rect);
 
     // TODO ajouter le listener lié à la sélection du radio rectangle
+    dess_rect.addItemListener(new GestionOutil(new DessineRectangleListener(this.dessinables)));
 
     // zone de glue
     add(Box.createGlue());
@@ -69,10 +70,17 @@ public class Controle extends JPanel {
   // gestion des outils activation/desactivation
   private class GestionOutil implements ItemListener {
 
-
+    private MouseListener listener;
     public GestionOutil(MouseListener _listener) {
+      this.listener = _listener;
     }
 
+    public void itemStateChanged(ItemEvent e) {
+      if (e.getStateChange() == ItemEvent.SELECTED)
+        dessin.addMouseListener(this.listener);
+      else
+        dessin.removeMouseListener(this.listener);
+    }
 
   }
 

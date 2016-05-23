@@ -20,16 +20,11 @@ public class MiniGimp {
 
     // création du panneau de la zone de dessin
     Dessin dsn = new Dessin();
-    figures.addDessinable(new Rectangle(5,5,50,50, Color.black));
-    figures.addDessinable(new Cercle(10,10,20, Color.red));
-    figures.vider();
-    figures.addDessinable(new Cercle(10,10,20, Color.red));
-    dsn.setModel(figures);
     contentPane.add(BorderLayout.CENTER,dsn);
 
     // création du panneau de controle
-    // Controle ctrl = new Controle(dsn,figures);
-    // contentPane.add(BorderLayout.WEST, ctrl);
+    Controle ctrl = new Controle(dsn,figures);
+    contentPane.add(BorderLayout.WEST, ctrl);
 
 
 
