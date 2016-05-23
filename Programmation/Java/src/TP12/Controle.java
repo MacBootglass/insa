@@ -58,11 +58,10 @@ public class Controle extends JPanel {
     add(quitter);
 
     quitter.addActionListener( new ActionListener() {
-	public void actionPerformed(ActionEvent e) {
-	  System.exit(0);
-	}
-      });
-
+    	public void actionPerformed(ActionEvent e) {
+    	  System.exit(0);
+    	}
+    });
   }
 
   // TODO créer la classe GestionOutil qui en fonction de la sélection
