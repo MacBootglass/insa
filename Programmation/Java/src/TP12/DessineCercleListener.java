@@ -13,7 +13,7 @@ public class DessineCercleListener extends MouseAdapter {
   }
 
   public void mouseClicked(MouseEvent e){
-    Color coul = new Color(Utilitaires.getIntAlea_1_Max(255)-1, Utilitaires.getIntAlea_1_Max(255)-1, Utilitaires.getIntAlea_1_Max(255)-1);
+    Color coul = new Color(Utilitaires.getIntAlea_1_Max(256)-1, Utilitaires.getIntAlea_1_Max(256)-1, Utilitaires.getIntAlea_1_Max(256)-1);
     Cercle c = new Cercle(e.getX(), e.getY(), Utilitaires.getIntAlea_1_Max(MAX_LENGTH), coul);
     dessinables.addDessinable(c);
   }
