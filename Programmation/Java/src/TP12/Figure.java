@@ -1,4 +1,4 @@
-package fr.insarouen.asi.minigimp;
+package TP12;
 
 import java.awt.*;
 
@@ -7,7 +7,7 @@ import java.awt.*;
 // **************************************
 abstract class Figure implements Dessinable {
   private static int compteur = 0;
-  
+
   private int numero;
   private Color couleur;
 
@@ -21,7 +21,7 @@ abstract class Figure implements Dessinable {
     this();
     couleur = _couleur;
   }
-  
+
   // méthodes
   abstract double getPerimetre();
   abstract double getSurface();
@@ -45,4 +45,3 @@ abstract class Figure implements Dessinable {
     return "Figure "+getNumero()+" "+getCouleur();
   }
 }
-

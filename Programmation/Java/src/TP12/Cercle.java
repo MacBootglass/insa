@@ -1,6 +1,6 @@
-package fr.insarouen.asi.minigimp;
+package TP12;
 
-import java.awt.*; 
+import java.awt.*;
 
 // **************************************
 // class Cercle
@@ -8,7 +8,7 @@ import java.awt.*;
 public class Cercle extends Figure {
   protected int x,y;         // coordonnees du centre
   protected int rayon;
-  
+
   // constructeur
   public Cercle(int _x, int _y, int _rayon, Color _couleur) {
     super(_couleur);
@@ -38,4 +38,3 @@ public class Cercle extends Figure {
     gc.fillOval(x, y, rayon, rayon);
   }
 }
-

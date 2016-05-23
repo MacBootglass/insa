@@ -1,4 +1,4 @@
-package fr.insarouen.asi.minigimp;
+package TP12;
 
 import java.util.*;
 

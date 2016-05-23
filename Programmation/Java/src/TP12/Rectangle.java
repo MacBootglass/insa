@@ -1,4 +1,4 @@
-package fr.insarouen.asi.minigimp;
+package TP12;
 
 import java.awt.*;
 
@@ -7,7 +7,7 @@ import java.awt.*;
 // **************************************
 public class Rectangle extends Figure {
   protected int x1,y1,x2,y2;         // coordonnees du LeRectangle
-  
+
   // constructeur
   public Rectangle(int _x1, int _y1, int _x2, int _y2, Color _couleur) {
     super(_couleur);
@@ -39,7 +39,3 @@ public class Rectangle extends Figure {
   }
 
 }
-
-
-
-

@@ -1,4 +1,4 @@
-package fr.insarouen.asi.minigimp;
+package TP12;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +14,7 @@ public class MiniGimp {
 
     Container contentPane = minigimp.getContentPane();
     // assignation du layout manager
-    contentPane.setLayout(new BorderLayout()); 
+    contentPane.setLayout(new BorderLayout());
 
     DessinablesData figures = new DessinablesData();
 

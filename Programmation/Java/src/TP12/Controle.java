@@ -1,4 +1,4 @@
-package fr.insarouen.asi.minigimp;
+package TP12;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +17,7 @@ public class Controle extends JPanel {
 
 
     // assignation du layout manager
-    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); 
+    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
     // creation du groupe d'exclusivite des boutons cercle et rect
     ButtonGroup bg = new ButtonGroup();
@@ -29,7 +29,7 @@ public class Controle extends JPanel {
     add(dess_cercle);
 
     // TODO ajouter le listener lié à la sélection du radio cercle
-    
+
 
     // JRadioButton rectangle, ajout au panneau, et assignation d'un listener
     JRadioButton dess_rect = new JRadioButton("Rectangle", false);
@@ -48,7 +48,7 @@ public class Controle extends JPanel {
     add(efface);
 
     // TODO ajouter le listener lié à l'effacement par le bouton efface
-    
+
 
 
 
@@ -69,12 +69,12 @@ public class Controle extends JPanel {
   // du bouton radio permet d'associer le bon listener.
   // gestion des outils activation/desactivation
   private class GestionOutil implements ItemListener {
-    
+
 
     public GestionOutil(MouseListener _listener) {
     }
 
-   
+
   }
 
 
@@ -82,4 +82,3 @@ public class Controle extends JPanel {
 
 
 }
-
