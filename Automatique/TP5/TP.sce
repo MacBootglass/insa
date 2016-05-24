@@ -8,6 +8,26 @@ function affNewPart(partie)
     printf("--------------------------------------\n");
 endfunction
 
+function val=y_inf(y)
+  val = y(length(y))
+endfunction
+
+function val=depassement(y)
+  val = (max(y) / y_inf(y) - 1) * 100
+endfunction
+
+function val = tempsReponse(t,y)
+  val = t(max(find(y<=y_inf(y)*0.95 | y>=y_inf(y)*1.05)))
+endfunction
+
+function val=t_x_pourcent(t, y, x)
+  val = t(min(find(y >= ((x / 100) * y_inf(y))  )))
+endfunction
+
+function val=tempsMontee(t, y)
+  val = t_x_pourcent(t, y, 90) - t_x_pourcent(t, y, 10)
+endfunction
+
 
 //PARTIE 1
 
@@ -101,6 +121,13 @@ consigne_BF = r * ones(1, length(t_BF));
 
 [Y_BF,X_BF] = csim(consigne_BF, t_BF, sys_BF);
 
+y = C_BF(1,:)*Y_BF;
+
+dep = depassement(y);
+tm = tempsMontee(t_BF, y);
+tr = tempsReponse(t_BF, y);
+
+
 //Affichage
 affNewPart(3);
 
@@ -115,7 +142,12 @@ printf("\t- Pole3: %f\n", l3BF);
 printf("\t- Pole4: %f\n", l4BF);
 
 printf("Matrice de gain K du régulateur par retour d état: [%d %d %d %d]\n", K(1), K(2), K(3), K(4));
-printf("Coefficient S du précompensateur: %d", S);
+printf("Coefficient S du précompensateur: %d\n", S);
+
+printf("Caractéristiques du système en BF:\n");
+printf("\t Depassement: %d pourcents\n", dep);
+printf("\t Temps de montée: %f secondes\n", tm);
+printf("\t Temps de réponse à 5 pourcents: %f secondes\n", tr);
 
 figure(2);
 for i=1:4
@@ -134,3 +166,10 @@ for i=1:4
     xtitle('Variation de la vitesse angulaire');
   end
 end
+
+//PARTIE 4
+
+//Calculs
+
+//Affichage
+affNewPart(4);
