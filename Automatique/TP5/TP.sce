@@ -167,9 +167,61 @@ for i=1:4
   end
 end
 
+
 //PARTIE 4
 
 //Calculs
+poles_obs = [-2,-2,-2,-2];
+k0 = ppol(A',C(1,:)',poles_obs);
+L = k0';
 
 //Affichage
 affNewPart(4);
+printf("Matrice de gain L: [%f %f %d %f]", L(1), L(2), L(3), L(4));
+
+
+//PARTIE 4
+
+//Calculs
+A_BFobs = [A, -B*K; L*C(1,:), A-B*K-L*C(1,:)];
+B_BFobs = [B*S(1); B*S(1)];
+C_BFobs = [C(1,:), zeros(1,4)];
+
+sys_BFobs = syslin('c', A_BFobs, B_BFobs, C_BFobs);
+
+t_BFobs =(0:0.1:100)';
+consigne_BFobs = 50 * ones(1, length(t_BFobs));
+ 
+[Y_BFobs, X_BFobs] = csim(consigne_BFobs, t_BFobs, sys_BFobs);
+
+y_BFobs = Y_BFobs;
+dep_BFobs = depassement(y_BFobs); // D=3.82
+tm_BFobs = tempsMontee(t_BFobs,y_BFobs);//tm=18.1
+tr_BFobs = tempsReponse(y_BFobs);//tr=27,4
+
+//Affichage
+figure(3);
+
+for i=1:4
+  subplot(2,2,i);
+  plot2d(t_BFobs, X_BFobs(i,:));
+  if(i==1)
+    xtitle('Variation de la position');
+  end
+  if(i==2)
+    xtitle('Variation de la vitesse du chariot');
+  end
+  if(i==3)
+    xtitle('Variation de la position angulaire');
+  end
+  if(i==4)
+    xtitle('Variation de la vitesse angulaire');
+  end
+end
+
+affNewPart(5);
+
+printf("Caractéristiques du système en BFobs:\n");
+printf("\t Depassement: %d pourcents\n", dep_BFobs);
+printf("\t Temps de montée: %f secondes\n", tm_BFobs);
+printf("\t Temps de réponse à 5 pourcents: %f secondes\n", tr_BFobs);

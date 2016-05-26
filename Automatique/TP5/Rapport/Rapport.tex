@@ -1,0 +1,89 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhead[L]{Thibault THEOLOGIEN}
+\fancyhead[R]{Automatique - INSA Rouen - ASI 3.2}
+
+\title{Automatique - Compte rendu TP5}
+\author{
+	Thibault THEOLOGIEN\\
+	INSA Rouen\\
+	ASI 3.2 - Groupe 1.1
+}
+
+\begin{document}
+	\maketitle
+	\tableofcontents
+	\newpage
+
+  \par L'objectif du mini-projet est la réalisation de la commande par retour d'un pont roulant.
+
+  \section{Détermination du modèle linéaire du pont roulant}
+  \label{sec:Détermination du modèle linéaire du pont roulant}
+    \par Se référer à l'annexe \ref{sec:Obtention du modèle d'état linéarisé du système} page \pageref{sec:Obtention du modèle d'état linéarisé du système}
+    afin de visualiser le calcul de l'obtention du modèle d'état linéarisé du système.
+
+    \begin{figure}[h]
+      \caption{Simulation du comportement du chariot}
+      \centering
+      \includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP5/Figure1.png}
+    \end{figure}
+
+    \par La vitesse du chariot tend vers l'infini donc le système n'est pas stable.
+    Cela se voit aussi en calculant les valeurs propres de la matrice A puisqu'elles sont nulles.
+    On se situe donc à la limite de stabilité.
+    D'autre part, la position angulaire et la vitesse angulaire oscillent en continu.
+  \newpage
+
+  \section{Analyse du modèe linéaire}
+  \label{sec:Analyse du modèe linéaire}
+    \par Nous trouvons grâce à Scilab que le rang C(A,B) est 4 et nous savons que n = 4 donc le système estcommandable.\\
+
+    \par Cas de la sortie de la position du chariot seule mesurée:
+    Le rang de O(A,C) est 4 et n=4 donc la sortie est observable pour C1=[1 0 0 0] car nous avons autant d'entrées que de sorties.\\
+
+    \par Cas de la sortie de l'angle du filin seul mesuré:
+    Le rang de O(A,C) est 2 et n=4 donc la sortie n'est pas observable pour C2=[0 0 1 0].\\
+
+    \par Ainsi, le seul cas ou le système est à la fois commandable et observable est celui où la sortie mesurée est celle de la position du charriot.
+  \newpage
+
+  \section{Analyse par retour d'état}
+  \label{sec:Analyse par retour d'état}
+    \par Se référer à l'annexe \ref{sec:Calcul des paramètres du système asservi} page \pageref{sec:Calcul des paramètres du système asservi}
+    afin de visualiser le calcul des paramètres du système linéarisé.
+
+    \begin{figure}[h]
+      \caption{Simulation du comportement du système asservi pour une consigne r(t) = 50m}
+      \centering
+      \includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP5/Figure2.png}
+    \end{figure}
+  \newpage
+
+  \section{Réalisation d'un observateur}
+  \label{sec:Réalisation d'un observateur}
+  \newpage
+
+	\appendix
+	% 	\section{Code Scilab}
+	% 	\begin{center}
+	% 		\includepdf[page=1]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP5/Code.pdf}
+	% 		\includepdf[page=2]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP5/Code.pdf}
+	% 		\includepdf[page=3]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP5/Code.pdf}
+	% 	\end{center}
+	%
+		\section{Obtention du modèle d'état linéarisé du système}
+		\label{sec:Obtention du modèle d'état linéarisé du système}
+		\newpage
+
+    \section{Calcul des paramètres du système asservi}
+    \label{sec:Calcul des paramètres du système asservi}
+    \newpage
+
+\end{document}
