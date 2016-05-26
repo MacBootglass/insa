@@ -32,7 +32,7 @@
     \begin{figure}[h]
       \caption{Simulation du comportement du chariot}
       \centering
-      \includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP5/Figure1.png}
+      \includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP5/Images/Figure1.png}
     \end{figure}
 
     \par La vitesse du chariot tend vers l'infini donc le système n'est pas stable.
@@ -41,8 +41,8 @@
     D'autre part, la position angulaire et la vitesse angulaire oscillent en continu.
   \newpage
 
-  \section{Analyse du modèe linéaire}
-  \label{sec:Analyse du modèe linéaire}
+  \section{Analyse du modèle linéaire}
+  \label{sec:Analyse du modèle linéaire}
     \par Nous trouvons grâce à Scilab que le rang C(A,B) est 4 et nous savons que n = 4 donc le système estcommandable.\\
 
     \par Cas de la sortie de la position du chariot seule mesurée:
@@ -54,30 +54,107 @@
     \par Ainsi, le seul cas ou le système est à la fois commandable et observable est celui où la sortie mesurée est celle de la position du charriot.
   \newpage
 
-  \section{Analyse par retour d'état}
-  \label{sec:Analyse par retour d'état}
+  \section{Asservissement par retour d'état}
+  \label{sec:Asservissement par retour d'état}
     \par Se référer à l'annexe \ref{sec:Calcul des paramètres du système asservi} page \pageref{sec:Calcul des paramètres du système asservi}
     afin de visualiser le calcul des paramètres du système linéarisé.
 
     \begin{figure}[h]
       \caption{Simulation du comportement du système asservi pour une consigne r(t) = 50m}
       \centering
-      \includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP5/Figure2.png}
+      \includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP5/Images/Figure2.png}
     \end{figure}
+
+    \par Nous remarquons que la position de la charge a varié de 50m, et la vitesse du chariot a augmenté audébut du déplacement pour ensuite diminuer et finalement s’annuler.
+    Les variations de la position angulaire et de la vitesse angulaire sont très faibles.
+    On peut donc dire que la charge n’a pas trop oscillé pendant le déplacement.
+    Notre système a donc été stabilisé.
+    On obtient les performances suivantes:
+    \begin{itemize}
+      \item Le pourcentage de dépassement est de: 4.06\%
+      \item Le temps de montée (passage de 10\% à 90\% de la valeur finale) est de: 17.9s
+      \item Le temps de réponse à 5\% obtenu est de: 27.2s
+    \end{itemize}
+    Tous les critères sont remplis, que ce soit au niveau du dépassement ou du temps de montée (le temps de montée obtenu est légèrement inférieur à celui escompté, cependant la marge d'erreur est raisonnable).
+    De plus, en régime permanent, l'erreur statique est bien nulle.
   \newpage
 
   \section{Réalisation d'un observateur}
   \label{sec:Réalisation d'un observateur}
+    \par Dans la partie \ref{sec:Analyse du modèle linéaire}, nous avons trouvé que le système était observable si la seule sortie mesurée est la position du chariot.
+    Il est donc possible de reconstruire les autres états à partir de la connaissance de xc = x1 et de l'entrée.\\
+
+    \par Nous avons une valeur propre unique $\lambda$ = -2
+     Or, nous avons besoin de 4 valeurs propres.
+     L’ordre de multiplicité de $\lambda$ est donc 4.
+     Ce pôle est plus rapide que les pôles dominants puisqu'il est plus loin de l'axe des imaginaires donc la convergence de l'état estimé grâce à l'observateur vers l'état réel du système est beaucoup plus rapide.\\
+
+    \par Avec l’aide de Scilab, on trouve la matrice de gain de l'observateur:\\
+     L = [8.00 19.05 0.00 -1.98]
   \newpage
 
+  \section{Commande par retour d'état avec reconstruction de l'état}
+  \label{sec:Commande par retour d'état avec reconstruction de l'état}
+    Soit le modèle suivant obtenu: \\
+    \[
+      \left[
+            \begin{array}{c}
+              \dot{x_1}\\
+              \dot{x_2}
+            \end{array}
+      \right]
+      =
+      \left[
+            \begin{array}{cc}
+              A  & -BK\\
+              LC & A-BK-LC
+            \end{array}
+      \right]
+      \times
+      \left[
+            \begin{array}{c}
+              x_1\\
+              x_2
+            \end{array}
+      \right]
+      +
+      \left[
+            \begin{array}{c}
+              BS\\
+              BS
+            \end{array}
+      \right]
+      \times r
+    \]
+
+    \begin{figure}[h]
+      \caption{Simulation du comportement du système global en boucle fermée}
+      \centering
+      \includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP5/Images/Figure3.png}
+    \end{figure}
+
+    On obtient les performances suivantes:
+    \begin{itemize}
+      \item Le pourcentage de dépassement est de: 4.06\%
+      \item Le temps de montée (passage de 10\% à 90\% de la valeur finale) est de: 17.9s
+      \item Le temps de réponse à 5\% obtenu est de: 47.5s
+    \end{itemize}
+
+    \par Nous sommes toujours conformes au cahier des charges.
+    En effet, à l'exception du temps de réponse à 5\%, non requis au cahier des charges, les performances n'ont pas changé depuis la partie \ref{sec:Asservissement par retour d'état}.
+    Il en va de même avec les courbes obtenues dont l'allure est identique.
+  \newpage
+
+
 	\appendix
-	% 	\section{Code Scilab}
-	% 	\begin{center}
-	% 		\includepdf[page=1]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP5/Code.pdf}
-	% 		\includepdf[page=2]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP5/Code.pdf}
-	% 		\includepdf[page=3]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP5/Code.pdf}
-	% 	\end{center}
-	%
+		\section{Code Scilab}
+    \label{sec:Code Scilab}
+		\begin{center}
+			\includepdf[page=1]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP5/Code.pdf}
+			\includepdf[page=2]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP5/Code.pdf}
+			\includepdf[page=3]{/home/ttheologien/MEGAsync/ASI_3.2/Automatique/TP5/Code.pdf}
+		\end{center}
+
 		\section{Obtention du modèle d'état linéarisé du système}
 		\label{sec:Obtention du modèle d'état linéarisé du système}
 		\newpage

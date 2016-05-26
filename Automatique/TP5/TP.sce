@@ -145,7 +145,7 @@ printf("Matrice de gain K du régulateur par retour d état: [%d %d %d %d]\n", K
 printf("Coefficient S du précompensateur: %d\n", S);
 
 printf("Caractéristiques du système en BF:\n");
-printf("\t Depassement: %d pourcents\n", dep);
+printf("\t Depassement: %f pourcents\n", dep);
 printf("\t Temps de montée: %f secondes\n", tm);
 printf("\t Temps de réponse à 5 pourcents: %f secondes\n", tr);
 
@@ -177,7 +177,7 @@ L = k0';
 
 //Affichage
 affNewPart(4);
-printf("Matrice de gain L: [%f %f %d %f]", L(1), L(2), L(3), L(4));
+printf("Matrice de gain L: [%f %f %d %f]\n", L(1), L(2), L(3), L(4));
 
 
 //PARTIE 4
@@ -222,6 +222,6 @@ end
 affNewPart(5);
 
 printf("Caractéristiques du système en BFobs:\n");
-printf("\t Depassement: %d pourcents\n", dep_BFobs);
+printf("\t Depassement: %f pourcents\n", dep_BFobs);
 printf("\t Temps de montée: %f secondes\n", tm_BFobs);
 printf("\t Temps de réponse à 5 pourcents: %f secondes\n", tr_BFobs);
