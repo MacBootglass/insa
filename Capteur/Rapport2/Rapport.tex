@@ -23,54 +23,63 @@
 	\tableofcontents
 	\newpage
 
-  \par Le but de ce TP était de ...
-
 	\section{Etude de l'accéléromètre en boucle ouverte}
 	\label{sec:Etude de l'accéléromètre en boucle ouverte}
-		\begin{figure}[h]
+		\begin{figure}[!h]
 			\caption{Schéma du montage}
 			\centering
 			\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Capteur/TP5/schemaBO.png}
 		\end{figure}
 
-		\begin{figure}[h]
+		\par On règle le signal de sortie du GBF à une fréquence de 100Hz et une tension de sortie de 500mV crête-crête qui restera constante.
+		On ajuste ensuite le gain de l’amplificateur accéléromètre de manière à obtenir un signal sinusoïdal de même valeur crête que le signal GBF (VACC).
+
+		\begin{figure}[!h]
 			\caption{Données obtenues}
 			\centering
 			\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Capteur/TP5/releveBO.png}
 		\end{figure}
 
-		\begin{figure}[h]
+		\begin{figure}[!h]
+			\caption{}
 			\centering
 			\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Capteur/TP5/diagrammeGainBO.png}
 		\end{figure}
 
-		\begin{figure}[h]
+		\begin{figure}[!h]
+			\caption{}
 			\centering
 			\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Capteur/TP5/diagrammePhaseBO.png}
 		\end{figure}
 
 	\pagebreak
 
-	\section{Etude de l'accéléromètre en boucle fermée}
-	\label{sec:Etude de l'accéléromètre en boucle fermée}
-		\begin{figure}[h]
+	\section{Etude de l'accéléromètre en boucle asservie}
+	\label{sec:Etude de l'accéléromètre en boucle asservie}
+		\begin{figure}[!h]
 			\caption{Schéma du montage}
 			\centering
 			\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Capteur/TP5/schemaBF.png}
 		\end{figure}
 
-		\begin{figure}[h]
+		\par On positionne le gain de l’amplificateur HP à 0.
+		On régle le GBF à 500mV crête-crête.
+		On augmente ensuite le gain de l’amplificateur jusqu’à ce qu’il y ait une oscillation puis le diminuer juste en dessous de l’oscillation.
+
+		\begin{figure}[!h]
 			\caption{Données obtenues}
 			\centering
 			\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Capteur/TP5/releveBF.png}
 		\end{figure}
 
-		\begin{figure}[h]
+		\begin{figure}[!h]
+			\caption{}
 			\centering
 			\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Capteur/TP5/diagrammeGainBF.png}
 		\end{figure}
 
-		\begin{figure}[h]
+		\begin{figure}[!h]
+			\caption{}
 			\centering
 			\includegraphics[width=12cm]{/home/ttheologien/MEGAsync/ASI_3.2/Capteur/TP5/diagrammePhaseBF.png}
 		\end{figure}
