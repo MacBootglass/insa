@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE cd SYSTEM "dtd/cd.dtd">
+
+<cd>
+  <interprete>
+    <nom>Guillot</nom>
+    <prenom>Agnès</prenom>
+  </interprete>
+
+  <interprete>
+    <nom>Daucé</nom>
+    <prenom>Emmanuel</prenom>
+  </interprete>
+
+  <titre>Rock en stock !</titre>
+
+  <groupe>Au fond de l'eau</groupe>
+
+  <edition>
+    <nom>SoundSystem</nom>
+    <lieu>Paris</lieu>
+    <pays>France</pays>
+    <annee>2002</annee>
+  </edition>
+
+  <admin>
+    <plages>316</plages>
+    <prix monnaie="EUR">80.00</prix>
+  </admin>
+
+  <critiques>
+    <resume>
+      <para>Blabla.</para>
+    </resume>
+    <remarque>Voir aussi le site Hermès: http://www.soundsystem.fr/fr/.</remarque>
+  </critiques>
+</cd>

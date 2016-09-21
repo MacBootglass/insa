@@ -1,0 +1,31 @@
+publication {
+  display: block;
+}
+
+bibliographie {
+  font-size: 2em;
+}
+
+publication:after {
+  content: ".";
+}
+
+titre {
+  font-style: italic;
+}
+
+titre:after {
+  content: "\",";
+}
+
+titre:before {
+  content: "\"";
+}
+
+auteur:after {
+  content: ",";
+}
+
+page:after {
+  content: ",";
+}

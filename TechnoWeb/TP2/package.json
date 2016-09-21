@@ -1,0 +1,16 @@
+{
+  "name": "TechnoWeb_TP2",
+  "version": "0.0.0",
+  "description": "TP2 de Techno Web",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Théologien Thibault",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-livereload": "^3.8.1",
+    "gulp-load-plugins": "^1.3.0",
+    "gulp-xml-validator": "^0.1.2"
+  }
+}

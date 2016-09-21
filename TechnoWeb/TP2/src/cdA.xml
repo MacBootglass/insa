@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE cd SYSTEM "dtd/cd.dtd">
+
+<cd>
+  <interprete>
+    <nom>Michard</nom>
+    <prenom>Alain</prenom>
+  </interprete>
+
+  <titre>Vive la vie !</titre>
+
+  <edition>
+    <nom>Epigramme</nom>
+    <lieu>Paris</lieu>
+    <pays>France</pays>
+    <annee>2001</annee>
+  </edition>
+
+  <admin>
+    <plages>10</plages>
+    <isbn type="hardback">ISBN 2-212-09206-7</isbn>
+    <prix monnaie="EUR">???</prix>
+  </admin>
+
+  <critiques>
+    <resume>
+      <para>Faux hardrock.</para>
+      <para>CD remasterisé.</para>
+    </resume>
+    <remarque>Plus sur le site des editions Epigramme : http://www.editions-epigramme/cd/michard.
+    </remarque>
+  </critiques>
+
+</cd>

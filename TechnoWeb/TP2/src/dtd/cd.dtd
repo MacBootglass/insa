@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF−8"?>
+  <!ELEMENT cd (interprete+, titre, groupe?, edition, admin, critiques*)>
+    <!ELEMENT interprete (nom, prenom)>
+      <!ELEMENT nom (#PCDATA)>
+      <!ELEMENT prenom (#PCDATA)>
+  <!ELEMENT titre (#PCDATA)>
+  <!ELEMENT groupe (#PCDATA)>
+  <!ELEMENT edition (nom, lieu, pays, annee)>
+    <!ELEMENT lieu (#PCDATA)>
+    <!ELEMENT pays (#PCDATA)>
+    <!ELEMENT annee (#PCDATA)>
+  <!ELEMENT admin (plages, isbn*, prix)>
+    <!ELEMENT plages (#PCDATA)>
+    <!ELEMENT isbn (#PCDATA)>
+      <!ATTLIST isbn type CDATA #REQUIRED>
+    <!ELEMENT prix (#PCDATA)>
+      <!ATTLIST prix monnaie CDATA #REQUIRED>
+  <!ELEMENT critiques (resume, remarque)>
+    <!ELEMENT resume (para+)>
+      <!ELEMENT para (#PCDATA)>
+    <!ELEMENT remarque (#PCDATA)>
