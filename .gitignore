@@ -7,6 +7,6 @@
 *.gz
 *.class
 *.o
-
 TechnoWeb/*/node_modules
 TechnoWeb/*/dist
+*.m~
