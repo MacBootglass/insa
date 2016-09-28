@@ -1,7 +1,10 @@
 clear;
 close all;
 
-%% Exercice 3
+%% Exercice 3 : Visages propres
+
+
+
 load('YaleFace/Subset1YaleFaces.mat');
 
 d = 9;
@@ -21,3 +24,4 @@ for i=1:9
   imagesc(reshape(U(:,i), 50, 50)); 
   colormap(gray);
 end
+
