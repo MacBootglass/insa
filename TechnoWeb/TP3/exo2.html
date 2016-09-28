@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Exercice 2</title>
+  </head>
+  <body>
+    <span id="date" />
+    <footer>
+      <script type="text/javascript">
+        function getDate() {
+          var date = new Date();
+          aff = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + "\t" +
+          (date.getHours() + 1) + ":" + (date.getMinutes()) + ":" + (date.getSeconds() + 1);
+          document.getElementById("date").innerText = aff;
+        }
+        setInterval(function(){ getDate() }, 1000);
+      </script>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+html {
+	font-size: 20px;
+}
+
+fieldset {
+	border-style: solid;
+	border-color: gray;
+	border-width: 5px;
+}
+
+legend {
+	background-color: gray;
+	color: white;
+	margin: 10px 10px 10px 10px;
+	padding: 5px 10px 5px 10px;
+}
+
+h1, #logo {
+	display: inline-block;
+}
+
+#logo {
+	float: right;
+}
+
+label {
+	display: inline-block;
+	width: 20%;
+}
+
+input[type=submit], input[type=reset] {
+	margin-top: 10px;
+	background-color: green;
+	color: white;
+}
+
+textarea {
+	width: 90%;
+}
+
+#error {
+	color: red;
+	font-weight: bold;
+}
