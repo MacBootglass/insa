@@ -3,9 +3,11 @@
 
 clear;
 close all;
+clc;
+addpath('../images');
 
 % Quantification de Lena
-imgLena(: , :, 1) = imread('images/lena_gray.tif');
+imgLena(: , :, 1) = imread('lena_gray.tif');
 
 figure();
 for i=1:8

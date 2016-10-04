@@ -3,10 +3,12 @@
 
 clear;
 close all;
+clc;
+addpath('../images');
 
 facteur = 4;
 
-imgMire = imread('images/mire.png');
+imgMire = imread('mire.png');
 imgEch1 = echantillonageImage(imgMire, facteur);
 imgEch2 = imgMire((1:facteur:size(imgMire,1)), (1:facteur:size(imgMire,2)));
 

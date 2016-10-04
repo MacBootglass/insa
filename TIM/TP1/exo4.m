@@ -3,16 +3,18 @@
 
 clear;
 close all;
+clc;
+addpath('../images');
 
 % CALCULS
 
-imgRice = imread('images/rice.tif');
+imgRice = imread('rice.tif');
 [valPresRice, occurRice] = histogramGris(imgRice);
 
-imgLena = imread('images/lena_gray.tif');
+imgLena = imread('lena_gray.tif');
 [valPresLena, occurLena] = histogramGris(imgLena);
 
-imgCamMan = imread('images/cameraman.tif');
+imgCamMan = imread('cameraman.tif');
 [valPresCamMan, occurCamMan] = histogramGris(imgCamMan);
 
 

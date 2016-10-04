@@ -3,6 +3,8 @@
 
 clear;
 close all;
+clc;
+addpath('../images');
 
 % CALCULS
 paletteGray256 = gray(256);

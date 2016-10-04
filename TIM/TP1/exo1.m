@@ -3,7 +3,8 @@
 
 clear;
 close all;
-addpath('images');
+clc;
+addpath('../images');
 
 img = imread('lena_gray.tif');
 imgQuart = img(1:(round(length(img)/2)), 1:(round(length(img)/2)));

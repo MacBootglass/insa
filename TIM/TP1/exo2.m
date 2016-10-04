@@ -3,6 +3,7 @@
 
 clear;
 close all;
+clc;
 
 N = 256;
 I = zeros(N, N);
