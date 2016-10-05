@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Formulaire d'inscription au forum ASI</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="style.css" rel="stylesheet" type="text/css"  />
+  </head>
+  <body>
+    <header id="top">
+      <img id="logo" src="images/logo-asi.png" alt="ASI" width="125" height="58" />
+      <h1>Forum ASI</h1>
+    </header>
+    <form action="GET">
+      <fieldset>
+        <legend>Formulaire d'nscription</legend>
+        <label for="name">Nom : </label><input placeholder="Saisissez votre nom"  id="name" name="name" type="text" size="30" />
+        <label for="name">Prénom : </label><input placeholder="Saisissez votre prénom"  id="surname" name="surname" type="text" size="30" />
+        <label for="email">E-mail : </label><input placeholder="Saisissez votre email" id="email" name="email" type="text" size="30" />
+        <hr/>
+
+        <label>Statut : </label>
+          <input type="radio" id="enseignant" name="statut" value="enseignant" /><label class="labelradio" for="enseignant"> Enseignant</label>
+          <input type="radio"  id="etudiant" name="statut" value="etudiant" /> <label  class="labelradio" for="etudiant"> Étudiant</label><br />
+        <label for="annee">Si étudiant, année : </label>
+          <select name="annee" id="annee">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select><br />
+        <label for="photo">Photo :</label> <input type="file" name="maPhoto" id="photo" />
+      </fieldset>
+      <input type="submit" />
+      <input type="reset" value="Effacer"/>
+    </form>
+
+    <footer>
+      <script src="scripts/jquery-2.1.4.min.js" charset="utf-8"></script>
+      <script src="scripts/index.js" charset="utf-8"></script>
+    </footer>
+  </body>
+</html>
