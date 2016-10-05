@@ -121,23 +121,6 @@ xquatre = x(indices, :);
 indices = find(y==6);
 xsix = x(indices, :);
 
-
-
-% /////INUTILE\\\\\
-
-% Représentation des données
-% figure()
-% hold on
-% for i=1:256
-%     plot(xdeux(:,i), 'ro', 'markersize', 8, 'markerfacecolor', 'r')
-%     plot(xquatre(:,i), 'bv', 'markersize', 8, 'markerfacecolor', 'g')
-%     plot(xsix(:,i), '+', 'markersize', 8, 'markerfacecolor', 'k')
-%     title('La vérité vraie','fontsize', 14)
-% end
-% hold off
-
-
-
 MatX = [xdeux; xquatre; xsix];
 clear xdeux xquatre xsix;
 
@@ -165,5 +148,3 @@ K = 3;
 N = length(Xnb);
 clustMax = aggclust(M, 'complete');
 plotclusters(clustMax(N-K+1).cluster, Xnb, K);
-
-% PAREIL ICI pour mydownsampling
