@@ -62,13 +62,44 @@ colormap(gray(256));
 filtreMoy = fspecial('average', N_filtre);
 filtreMoyCirc = fspecial('disk', N_filtre);
 
-imgFiltre2Moy = filter2(filtreMoy, imgBruit);
-imgFiltre2MoyCirc = filter2(filtreMoyCirc, imgBruit);
+imgFiltre2MoySame = filter2(filtreMoy, imgBruit, 'same');
+imgFiltre2MoyCircSame = filter2(filtreMoyCirc, imgBruit, 'same');
+
+imgFiltre2MoyValid = filter2(filtreMoy, imgBruit, 'valid');
+imgFiltre2MoyCircValid = filter2(filtreMoyCirc, imgBruit, 'valid');
+
+imgFiltre2MoyFull = filter2(filtreMoy, imgBruit, 'full');
+imgFiltre2MoyCircFull = filter2(filtreMoyCirc, imgBruit, 'full');
 
 figure();
-imagesc(imgFiltre2Moy);
+subplot(2,2,1);
+imagesc(imgFiltre2MoySame);
+title('Effet de bord same');
 colormap(gray(256));
 
+subplot(2,2,2);
+imagesc(imgFiltre2MoyValid);
+title('Effet de bord valid');
+colormap(gray(256));
+
+subplot(2,2,3);
+imagesc(imgFiltre2MoyFull);
+title('Effet de bord full');
+colormap(gray(256));
+
+
 figure();
-imagesc(imgFiltre2MoyCirc);
+subplot(2,2,1);
+imagesc(imgFiltre2MoyCircSame);
+title('Effet de bord same');
+colormap(gray(256));
+
+subplot(2,2,2);
+imagesc(imgFiltre2MoyCircValid);
+title('Effet de bord valid');
+colormap(gray(256));
+
+subplot(2,2,3);
+imagesc(imgFiltre2MoyCircFull);
+title('Effet de bord full');
 colormap(gray(256));
