@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -12,7 +14,6 @@
 #include "reseau.h"
 #define TAILLE_BUFFER 100000
 
-
 int ecouter(int socketServeur, int longueurFileDAttente, char * repertoireServeur);
 int traiterRequete(int socketClient, char * repertoireServeur);
 int lireRequete(int socket, char formatRequete[]);
@@ -20,32 +21,19 @@ int envoyerResultat(int socket, char formatRequete[], char * repertoireServeur);
 void obtenirConfiguration(char * adresseServeur, char * portServeur, char * repertoireServeur);
 
 int main(int argc,char **argv) {
-  char *adresseServeur=NULL;
-  char *portServeur="8080";
-  char *repertoireServeur="www";
+  char *adresseServeur;
+  char *portServeur;
+  char *repertoireServeur;
 
-  int socketServeur;
-
-  if ( argc >= 2 ) {
-    adresseServeur=argv[1];
-  } else {
-    adresseServeur="127.0.0.1";
-  }
-  if ( argc >= 3 )
-    portServeur=argv[2];
-
-  socketServeur=creerSocketTCPServeur(construireAdresseTCPUDPDepuisChaine(adresseServeur, portServeur));
-
-  if (socketServeur!=-1)
-    ecouter(socketServeur,10,repertoireServeur);
-  return 1;
-}
-
-void obtenirConfiguration(char * adresseServeur, char * portServeur, char * repertoireServeur) {
   FILE * fp;
-  char * line = NULL;
   size_t len = 0;
   ssize_t read;
+  char * line = NULL;
+  char keyword[30];
+  char tmp[30];
+  char * token;
+  char * delimiter = "=";
+  int unknow = 0;
 
   fp = fopen("etc/config.txt", "r");
   if (fp == NULL){
@@ -54,14 +42,47 @@ void obtenirConfiguration(char * adresseServeur, char * portServeur, char * repe
   }
 
   while ((read = getline(&line, &len, fp)) != -1) {
-    printf("Réception d'une ligne de longueur %zu :\n", read);
-    printf("%s", line);
+    token = strtok(line, delimiter);
+
+    while( token != NULL ) {
+      if (strcmp(token, "server_ip") == 0 || strcmp(token, "server_port_TCP") == 0 || strcmp(token, "server_root_directory") == 0){
+        strcpy(keyword, token);
+        unknow = 0;
+      }
+      else if (unknow == 0) {
+        strcpy(tmp, token);
+        tmp[strlen(tmp)-1] = '\0';
+
+        if (strcmp(keyword, "server_ip") == 0){
+          adresseServeur = (char*)malloc(strlen(tmp));
+          strcpy(adresseServeur, tmp);
+        }
+        else if (strcmp(keyword, "server_port_TCP") == 0){
+          portServeur = (char*)malloc(strlen(tmp));
+          strcpy(portServeur, tmp);
+        }
+        else if (strcmp(keyword, "server_root_directory") == 0){
+          repertoireServeur = (char*)malloc(strlen(tmp));
+          strcpy(repertoireServeur, tmp);
+        }
+      }
+      else{
+        unknow = 1;
+      }
+      token = strtok(NULL, delimiter);
+    }
   }
   if (line)
     free(line);
 
-  exit(EXIT_SUCCESS);
+  int socketServeur;
+  socketServeur=creerSocketTCPServeur(construireAdresseTCPUDPDepuisChaine(adresseServeur, portServeur));
+
+  if (socketServeur!=-1)
+    ecouter(socketServeur,10,repertoireServeur);
+  return 1;
 }
+
 
 int ecouter(int socketServeur, int longueurFileDAttente, char * repertoireServeur) {
   socklen_t longueurAdresseClient;
@@ -83,6 +104,7 @@ int ecouter(int socketServeur, int longueurFileDAttente, char * repertoireServeu
   return erreur;
 }
 
+
 int traiterRequete(int socketClient, char * repertoireServeur) {
   char formatRequete[TAILLE_BUFFER];
   if (lireRequete(socketClient,formatRequete)!=-1)
@@ -103,15 +125,8 @@ int lireRequete(int socket, char formatRequete[]) {
 
 int envoyerResultat(int socket, char formatRequete[], char * repertoireServeur) {
   FILE * fp;
-
   char buffer[TAILLE_BUFFER];
   char result[TAILLE_BUFFER];
-  memset(buffer, 0, TAILLE_BUFFER);
-  memset(result, 0, TAILLE_BUFFER);
-
-  // char * buffer;
-  // char * result;
-
   char requete[20], file[20], httpVersion[20], pwd[20];
   int nbCaracteres = TAILLE_BUFFER;
 
@@ -122,7 +137,6 @@ int envoyerResultat(int socket, char formatRequete[], char * repertoireServeur) 
   }
   strcpy(pwd, repertoireServeur);
   strcat(pwd, file);
-
 
   // On récupère l'extension du fichier demandé afin de déterminer le Content-Type
   int i = 0;
@@ -138,20 +152,15 @@ int envoyerResultat(int socket, char formatRequete[], char * repertoireServeur) 
   }
 
 
+  memset(buffer, 0, TAILLE_BUFFER);
+  memset(result, 0, TAILLE_BUFFER);
   fp = fopen(pwd, "rb");
 
   if (fp != NULL) {
-
     //Détermination de la longueur du fichier
     fseek(fp, 0, SEEK_END);
-    nbCaracteres = ftell(fp)+1;
+    nbCaracteres = ftell(fp);
     rewind(fp);
-
-    // result = (char*)malloc(100+nbCaracteres);
-    // memset(result, 0, 100+nbCaracteres);
-    //
-    // buffer = (char*)malloc(nbCaracteres);
-    // memset(buffer, 0, nbCaracteres);
 
     // Recuperation du contenu du fichier
     fread(buffer, nbCaracteres, 1, fp);
@@ -160,17 +169,17 @@ int envoyerResultat(int socket, char formatRequete[], char * repertoireServeur) 
     if (strcmp(extension, "html") == 0 || strcmp(extension, "htm") == 0) {
       sprintf(result, "HTTP/1.0 200 OK\nContent-Type: text/html; charset=utf-8\nContent-Length:%d \n\n", nbCaracteres);
     }
-
-    if (strcmp(extension, "css") == 0) {
+    else if (strcmp(extension, "css") == 0) {
       sprintf(result, "HTTP/1.0 200 OK\nContent-Type: text/css; charset=utf-8\nContent-Length:%d \n\n", nbCaracteres);
     }
-
-    if (strcmp(extension, "jpg") == 0 || strcmp(extension, "jpeg") == 0) {
+    else if (strcmp(extension, "jpg") == 0 || strcmp(extension, "jpeg") == 0) {
       sprintf(result, "HTTP/1.0 200 OK\nContent-Type: image/jpeg\nContent-Length:%d \n\n", nbCaracteres);
     }
-
-    if (strcmp(extension, "png") == 0) {
+    else if (strcmp(extension, "png") == 0) {
       sprintf(result, "HTTP/1.0 200 OK\nContent-Type: image/png\nContent-Length:%d \n\n", nbCaracteres);
+    }
+    else if (strcmp(extension, "ico") == 0) {
+      sprintf(result, "HTTP/1.0 200 OK\nContent-Type: image/x-icon\nContent-Length:%d \n\n", nbCaracteres);
     }
 
     // Calcul de la longueur total de l'envoi
@@ -180,14 +189,9 @@ int envoyerResultat(int socket, char formatRequete[], char * repertoireServeur) 
     memcpy(result + strlen(result), buffer, nbCaracteres);
   }
   else {
-    // result = (char*)malloc(100);
-    // memset(result, 0, 100);
     strcpy(result, "HTTP/1.0 404 Not Found\n\n<h1>Error 404: Page Not Found</h1>"); // Fichier non trouvé
-    nbCaracteres += strlen(result);
+    nbCaracteres = strlen(result);
   }
 
-
-  // free(buffer);
-  // free(result);
   return write(socket,result,nbCaracteres);
 }
