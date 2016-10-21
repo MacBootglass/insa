@@ -1,0 +1,30 @@
+ifconfig eth1 up
+ifconfig eth2 up
+ifconfig eth3 up
+ifconfig eth25 up
+ifconfig eth26 up
+
+ifconfig eth1 hw ether 00:00:00:00:01:01  # sw1 port 1
+ifconfig eth2 hw ether 00:00:00:00:01:02  # sw1 port 2
+ifconfig eth3 hw ether 00:00:00:00:01:03  # sw1 port 3
+ifconfig eth25 hw ether 00:00:00:00:01:25 # sw1 port 25
+ifconfig eth26 hw ether 00:00:00:00:01:26 # sw1 port 26
+
+brctl addbr vlan10                         # creation d'un pont appele vlan10
+brctl addbr vlan20                         # creation d'un pont appele vlan20
+
+brctl addif vlan10 eth1                    # ajout de eth1 a vlan10
+brctl addif vlan10 eth3                    # ajout de eth3 a vlan10
+brctl addif vlan10 eth25                   # ajout de eth25 a vlan10
+
+brctl addif vlan20 eth2                    # ajout de eth2 a vlan20
+brctl addif vlan20 eth26                   # ajout de eth26 a vlan20
+
+brctl stp vlan10 on                        # activation du protocole spanning tree sur ce pont
+brctl stp vlan20 on                        # activation du protocole spanning tree sur ce pont
+
+ifconfig vlan10 up                         # monte vlan10
+ifconfig vlan20 up                         # monte vlan20
+
+brctl setageing vlan10 7200
+brctl setageing vlan20 7200
