@@ -45,7 +45,8 @@ title('Dérivée seconde signal toit');
 
 %% 2- Les opérateurs dérivatifs du premier ordre
 
-cameraman = imread('cameraman.tif');
+cameraman = double(imread('cameraman.tif'));
+cameraman = cameraman / 255;
 gray = gray(256);
 
 % Norme du gradient
@@ -117,7 +118,7 @@ colormap(gray);
 % A partir des dérivées
 [ddXcam, dYdXcam] = gradient(dXcam);
 [dXdYcam, ddYcam] = gradient(dYcam);
-camLap = ddXcam + ddYcam;
+camLap = abs(ddXcam + ddYcam);
 
 figure()
 imagesc(camLap);
@@ -126,10 +127,10 @@ colormap(gray);
 
 % Avec l'opérateur laplacien sur voisinage réduit :
 laplace = [0 -1 0; -1 4 -1; 0 -1 0];
-camlaplace = filter2(laplace, cameraman);
+camLaplace = abs(filter2(laplace, cameraman));
 
 figure();
-imagesc(camlaplace);
+imagesc(camLaplace);
 title('Laplacien par opérateur');
 colormap(gray);
 
@@ -140,7 +141,7 @@ gauss2 = fspecial('gaussian',3,0.96);
 camGauss1 = filter2(gauss1, cameraman);
 camGauss2 = filter2(gauss2, cameraman);
 
-camGauss = camGauss1 - camGauss2;
+camGauss = abs(camGauss1 - camGauss2);
 
 figure();
 imagesc(camGauss);
@@ -148,4 +149,45 @@ title('DOG');
 colormap(gray);
 
 %% 4- Extraction de contours par seuillage.
-cameraman = cameraman / 255;
+
+seuilSobel = 0.3;
+seuilGauss = 0.1;
+seuillageCamSobel = ((camSobel / max(max(camSobel))) > seuilSobel);
+seuillageCamGauss = ((camGauss / max(max(camGauss))) > seuilGauss);
+
+figure();
+subplot(1,2,1);
+imagesc(seuillageCamSobel);
+title('Seuillage dun operateur du premier ordre');
+
+subplot(1,2,2);
+imagesc(seuillageCamGauss);
+title('Seuillage dun operateur du second ordre');
+colormap(gray);
+
+%% 5- Mise en situation
+clear all;
+close all;
+
+gray = gray(256);
+p = 0.1;
+filterSize = 3;
+seuilSobel = 0.2;
+seuilPrewitt = 0.2;
+seuilLaplacian = 0.2;
+seuilGaussian = 0.4;
+cameraman = double(imread('cameraman.tif'))/255;
+cameramanBruit = imnoise(cameraman,'salt & pepper', p);
+cameramanDebruite = filter2(fspecial('average', filterSize), cameramanBruit);
+
+cameramanSobel = EdgeExtraction(cameramanDebruite, 'sobel', seuilSobel);
+affichage(cameraman, cameramanBruit, cameramanDebruite, cameramanSobel, gray, 'sobel');
+
+cameramanPrewitt = EdgeExtraction(cameramanDebruite, 'prewitt', seuilPrewitt);
+affichage(cameraman, cameramanBruit, cameramanDebruite, cameramanPrewitt, gray, 'prewitt');
+
+cameramanLaplacian = EdgeExtraction(cameramanDebruite, 'laplacian', seuilLaplacian);
+affichage(cameraman, cameramanBruit, cameramanDebruite, cameramanLaplacian, gray, 'laplacian');
+
+cameramanGaussian = EdgeExtraction(cameramanDebruite, 'gaussian', seuilGaussian);
+affichage(cameraman, cameramanBruit, cameramanDebruite, cameramanGaussian, gray, 'gaussian');
