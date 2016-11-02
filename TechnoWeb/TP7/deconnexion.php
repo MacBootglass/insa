@@ -4,4 +4,5 @@
     unset($SESSION_['userID']);
   }
   session_destroy();
+  header("Location: ./compteur.php");
 ?>
