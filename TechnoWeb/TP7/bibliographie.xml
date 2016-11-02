@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- <!DOCTYPE interpretes SYSTEM "./dtd/bibliographie.dtd"> -->
+<!DOCTYPE bibliographie SYSTEM "./dtd/bibliographie.dtd">
+<?xml-stylesheet type="text/css" href="./css/bibliographie.css" ?>
+
+
+<bibliographie>
+  <publication type="article">
+    <titre>L'assassin Royal</titre>
+    <auteurs>
+      <auteur>Robin Hobb</auteur>
+    </auteurs>
+    <pages>580</pages>
+    <annee>2007</annee>
+  </publication>
+
+  <publication type="conference">
+    <titre>Troie</titre>
+    <auteurs>
+      <auteur>David Gemmell</auteur>
+      <auteur>Stella Gemmell</auteur>
+    </auteurs>
+    <pages>850</pages>
+    <annee>2006</annee>
+  </publication>
+</bibliographie>
