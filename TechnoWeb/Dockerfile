@@ -1,4 +1,4 @@
-FROM nginx:latest
+FROM php:7.0-apache
 MAINTAINER thibault.theologien@insa-rouen.fr
-VOLUME /usr/share/nginx/html
-WORKDIR /usr/share/nginx/html
+VOLUME /var/www/html
+WORKDIR /var/www/html
