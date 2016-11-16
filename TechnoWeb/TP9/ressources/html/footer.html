@@ -1,0 +1,22 @@
+<footer>
+  <script type="text/javascript">
+    document.getElementById("erreur").style.display = "none";
+    document.getElementById("formulaire").onsubmit =
+      function () {
+        if (document.getElementById("mail").value === "") {
+          document.getElementById("mail").className = "invalide";
+          document.getElementById("erreur").style.display = "block";
+          return false;
+        }
+
+        document.getElementById("mail").className = "";
+        document.getElementById("erreur").style.display = "none";
+        return true;
+      };
+
+    document.getElementById("formulaire").onreset =
+      function () {
+        return window.confirm("Voulez-vous vraiment réinitialiser le formulaire ?");
+      };
+  </script>
+</footer>
