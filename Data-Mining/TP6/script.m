@@ -85,9 +85,9 @@ set(h, 'linewidth', 2, 'color', 'g')
 clabel(c,h)
 
 %% II. La tête dans les étoiles
-clear;
-close all;
-clc;
+% clear;
+% close all;
+% clc;
 
 load('astrodata.mat');
 
