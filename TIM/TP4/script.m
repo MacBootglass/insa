@@ -19,7 +19,7 @@ lena = double(imread('lena_gray.tif'));
 rice = double(imread('rice.tif'));
 cameraman = double(imread('cameraman.tif'));
 gray = gray(256);
-gauss = fspecial('gaussian', 3, 0.5);
+gauss = fspecial('gaussian', 3, 0.7);
 
 lenaGauss = filter2(gauss, lena);
 [lenaGx, lenaGy] = gradient(lenaGauss);
@@ -51,10 +51,8 @@ title('Lena Cany');
 colormap(gray);
 
 
-
-lenaCany = lenaCany / 255;
-seuilMax = 0.72;
-seuilMin = 0.6;
+seuilMax = 15;
+seuilMin = 1;
 
 lenaSeuil = lenaCany;
 
@@ -64,17 +62,18 @@ lenaSeuil(lenaSupSeuilMax) = 1;
 lenaInfSeuilMin = find(lenaCany <= seuilMin);
 lenaSeuil(lenaInfSeuilMin) = 0;
 
-tmp = find(lenaCany >= seuilMax);
-[x, y] = find(lenaCany > seuilMin);
-x = x(1:length(x)-length(tmp));
-y = y(1:length(y)-length(tmp));
-
+[x, y] = find(lenaCany > seuilMin & lenaCany < seuilMax);
+disp(length(x));
 for k=1:length(x)
-  for i=x-1:x+1
-    for j=y-1:y+1
-      if i > 0 && i <= length(lenaCany) && j > 0 && j <= length(lenaCany)
+  tmp = 1;
+  for i=x(k)-1:x(k)+1
+    for j=y(k)-1:y(k)+1
+      if i > 0 && i <= length(lenaCany) && j > 0 && j <= length(lenaCany) && tmp == 1;
         if lenaCany(i,j) >= seuilMax
           lenaSeuil(x(k), y(k)) = 1;
+          tmp = 0;
+        else
+          lenaSeuil(x(k), y(k)) = 0;
         end
       end
     end
