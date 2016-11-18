@@ -1,0 +1,4 @@
+ip link set eth0 up
+ip addr add 10.20.0.1/16 dev eth0
+route add -net 0/0 gw 10.20.0.250
+echo "nameserver 10.30.0.1" > /etc/resolv.conf

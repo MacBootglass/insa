@@ -1,0 +1,27 @@
+ip link set eth0 up # réveiller l'interface generale
+
+vconfig add eth0 10  # créer la sous interface VLAN10
+ip link set eth0.10 up  # on la réveille
+
+vconfig add eth0 20
+ip link set eth0.20 up
+
+vconfig add eth0 30
+ip link set eth0.30 up
+
+vconfig add eth0 100
+ip link set eth0.100 up
+
+ip addr add 10.10.0.250/16 dev eth0.10   # on attribue l'adresse IP a la sous interface 10
+ip addr add 10.20.0.250/16 dev eth0.20
+ip addr add 10.30.0.250/16 dev eth0.30
+ip addr add 194.167.110.1/24 dev eth0.100
+
+#dev : device
+
+iptables -t filter -P INPUT DROP
+iptables -t filter -P FORWARD DROP
+iptables -t filter -P OUTPUT ACCEPT
+iptables -t filter  -I INPUT -p icmp -j ACCEPT
+iptables -t filter  -I FORWARD -p icmp -j ACCEPT
+iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
