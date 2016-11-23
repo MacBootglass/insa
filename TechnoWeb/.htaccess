@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteBase /~ttheologien/
+RewriteRule site/([0-9]+) iframe.php?id=$1 [QSA,L]
+ErrorDocument 404 <h1>Error&nbsp;404&nbsp;not&nbsp;found</h1>
