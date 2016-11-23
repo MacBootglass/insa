@@ -1,0 +1,15 @@
+fieldset {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 50%;
+}
+
+.champ {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.champ > input {
+  position: relative;
+  left: 10px;
+}

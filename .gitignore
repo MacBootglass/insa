@@ -13,3 +13,4 @@ TechnoWeb/*/dist
 Reseaux/serverHTTP/bin
 .DS_Store
 .ftpconfig
+*.war
