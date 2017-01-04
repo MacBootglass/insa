@@ -1,7 +1,11 @@
+%% TP6 TIM
+% KILANI Riadh
+% THEOLOGIEN Thibault
+
+
 close all
 clear all;
 clc;
-close all;
 
 % Chargement image
 I1 = double(rgb2gray(imread('brique.png'))); 

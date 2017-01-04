@@ -1,3 +1,7 @@
+%% TP6 TIM
+% KILANI Riadh
+% THEOLOGIEN Thibault
+
 function M = calcul_moments_ordre2( Coo )
   moyenne = mean(Coo(:));
   variance = 0;

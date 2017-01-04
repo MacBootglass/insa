@@ -1,3 +1,7 @@
+%% TP6 TIM
+% KILANI Riadh
+% THEOLOGIEN Thibault
+
 function M = creer_coocurrence( P, L )
   M = zeros(L, L);
   for k=1:L
