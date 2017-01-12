@@ -7,6 +7,16 @@
 *.gz
 *.class
 *.o
+*.ready
+*.disk
+p1
+*.odt
+p2
+p3
+p4
+p5
+sw1
+sw2
 TechnoWeb/*/node_modules
 TechnoWeb/*/dist
 *.m~
