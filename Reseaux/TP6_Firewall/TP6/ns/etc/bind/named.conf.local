@@ -1,0 +1,28 @@
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
+zone "maboite.fr" {
+	type master;
+	file "/etc/bind/db.maboite";
+};
+
+zone "0.10.10.in-addr.arpa" {
+        type master;
+        file "/etc/bind/db.10.10.0";
+};
+
+zone "0.20.10.in-addr.arpa" {
+        type master;
+        file "/etc/bind/db.10.20.0";
+};
+
+zone "0.30.10.in-addr.arpa" {
+        type master;
+        file "/etc/bind/db.10.30.0";
+};
+

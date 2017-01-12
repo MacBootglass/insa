@@ -1,0 +1,1 @@
+ip link set eth0 up address 00:00:00:00:00:12

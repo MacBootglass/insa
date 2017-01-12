@@ -1,0 +1,34 @@
+ip link set eth1 up
+ip link set eth2 up
+ip link set eth3 up
+ip link set eth25 up
+vconfig add eth25 10
+ip link set eth25.10 up
+vconfig add eth25 20
+ip link set eth25.20 up
+vconfig add eth25 30
+ip link set eth25.30 up
+vconfig add eth25 100
+ip link set eth25.100 up
+
+brctl addbr vlan10
+brctl addbr vlan20
+brctl addbr vlan30
+brctl addbr vlan100
+brctl addif vlan10 eth1
+brctl addif vlan20 eth2
+brctl addif vlan100 eth3
+brctl addif vlan10 eth25.10
+brctl addif vlan20 eth25.20
+brctl addif vlan30 eth25.30
+brctl addif vlan100 eth25.100
+
+brctl stp vlan10 on
+brctl stp vlan20 on
+brctl stp vlan30 on
+brctl stp vlan100 on
+
+ip link set vlan10 up
+ip link set vlan20 up
+ip link set vlan30 up
+ip link set vlan100 up

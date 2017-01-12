@@ -1,0 +1,155 @@
+\documentclass[a4paper]{article}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{geometry}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{lscape}
+\usepackage{pict2e}
+\usepackage{parskip}
+\usepackage[squaren, Gray, cdot]{SIunits}
+
+\geometry{hmargin=2.0cm, vmargin=2.5cm}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+
+\pagestyle{fancy}
+
+\fancyhead[C]{\textbf{Réseau} \\ TP0 : Introduction à Netkit}  
+\fancyhead[L]{}
+\fancyhead[R]{}
+\renewcommand{\headrulewidth}{0.5pt}
+
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[C]{Publiée le \today}
+\fancyfoot[R]{page \thepage/\pageref{LastPage}}
+\fancyfoot[L]{FIQUET - THEOLOGIEN}
+
+\makeatletter
+\@addtoreset{section}{part}
+\makeatother
+
+% \par\leavevmode\par
+\begin{document}
+
+	\section{Recherche documentaire}
+	
+{\Large Utilisation de netkit :} 
+
+Permet de simuler des réseaux informatiques. A chaque machine virtuelle est associée une image disque. Cette image est composée de deux fichiers dont le nom est le nom de la machine et les extensions sont .disk et .log.
+
+Un ensemble de machines lancées en même temps s’appelle un lab dans le jargon netkit. Un lab est en fait constituée d’un ensemble de répertoires (un par machine virtuelle à lancer), d’un fichier de configuration général lab.conf, et d’un fichier de configuration par machine (XX.startup). Pour lancer un lab, il faut être positionnée dans le répertoire contenant le fichier lab.conf. Les commandes importantes permettant de gérer un lab sont :
+
+\noindent
+\textbf{lstart :} Lancer un lab . \\
+\textbf{lstart -f :} Lancer un lab de façon plus rapide.\\
+\textbf{lhalt :} Arrêter toutes les machines d'un lab.\\
+\textbf{lhalt -q :} Arrêter toutes les machines d'un lab de façon plus rapide.\\
+\textbf{linfo :} Affiche les infos concernant un lab.\\
+\textbf{lcrash :} Tue toutes les machines d'un lab.\\
+\textbf{lclean :} Supprime les fichiers temporaire d'un lab.\\
+
+--> Depuis la machine virtuelle on peut accéder à la machine physique en utilisant le répertoire /hosthome.
+
+		\subsection{Commande PING}
+--> Vérifie qu'il y a une connexion existante (présence d'une machine) sur la couche réseau par des envoies de paquet. 	
+
+Utilisation de ping avec adresse IP ou nom de domaine :\\
+\noindent
+\$ ping 127.0.0.1\\
+\$ ping google.fr
+
+
+Options possibles : \\
+-i : l'intervalle d'envoi entre deux paquets (en seconde)\\
+-c : nombre d'envois
+
+		\subsection{Commande SCREEN}
+		
+--> 	Exécute en fond de tache.
+
+\noindent
+\textbf{screen :}  Lance une session screen dans un terminal\\
+\textbf{screen -r :}	 Récupére la dernière session screen lancée. \\
+\textbf{screen -r (id):}	Récupére la session id. \\
+\textbf{screen -d :}	 Liste les sessions screen lancées. \\
+\textbf{screen -A -s nomScreen :} Lance un screen nommé nomScreen. \\	
+\textbf{screen -S titi :} Crée une nouvelle session titi.		
+\textbf{screen -ls :} Affiche tous les screen ouvert.\\
+
+\noindent
+\textbf{CTRL + A + D :} Lancé dans le screen, cela le détache. \\
+\textbf{CTRL + A + C :} Créer une fenêtre. \\	
+\textbf{CTRL + A + K :} Tue fenêtre courante. \\
+
+
+		\subsection{Commande TCPDUMP}
+		
+--> 	Permet d'afficher ou de stocker des données qui transitent sur la carte réseau. Pour capturer le flux réseau d'une interface et le dumper dans un fichier.
+
+\noindent
+\textbf{Tcpdump -w fichier.pcap -i nomInterface} \\
+\textbf{Tcpdump -i eth0 :} Interface sur laquelle on travaille sinon on met any pour toutes les interfaces.\\
+\textbf{Tcpdump -s0 :} Enregistre tout que ce soit de la taille de la trame, si on met un nombre sera de la taille de ce nombre en octet. \\
+\textbf{Tcpdump -D :} Quand on ne sait pas sur quelle interface travailler, ça permet de tout lister. \\
+
+Options possibles : \\
+n : pas de résolution inverse\\
+D : lister les interfaces \\
+vvv : log les paquets dans le shell \\
+i any : toutes les interfaces \\
+S nb : taille des paquets à enregistrer \\
+	
+		\subsection{Commande WIRESHARK}
+--> Permet d'analyser le flux en temps réel d'une interface réseau ou d'importer un fichier de capture réseau.
+Possède une interface graphique, c’est pourquoi on ne peut pas l’utiliser sur une machine virtuel. Donc il faut enregistrer ce qu’on a dans notre machine virtuel sur hosthome pour pouvoir l'analyser.		
+		
+Extension wireshark: .cap
+
+		
+	\section{Utilisation de lstart, llist et lhalt}
+
+\textbf{Lancer le labo :}\\
+--> Placer le lab dans /tmp (car fichiers volumineux).\\
+--> cd dans le répertoire puis commande 'lstart' ou 'lstart -q' pour lancer plusieurs lab en même temps. 	
+
+\textbf{Arrêter la machine P1 :}\\
+--> Aller dans le terminal de la machine P1 puis taper 'halt' ou alors taper 'lhalt p1' dans la machine physique. 
+
+\textbf{Redémarrer la machine p1 :}\\
+--> 'Reboot' dans le terminal de la machine p1.
+
+\textbf{Afficher bonjour :}\\
+--> Ecrire dans le fichier 'p1.startup' : echo "Hello".
+
+\textbf{Afficher le bashrc :}\\
+--> cd /hosthome \\
+--> cat .bashrc
+
+\textbf{Copier un fichier de la machine physique vers la machine virtuelle :}\\
+--> cd /hosthome
+--> echo "a" > a.txt
+--> cp a.txt ../
+ou --> cp /hosthome/.bashrc /root/bashrcCopie.txt
+
+\textbf{Arrêter le labo :}\\
+--> 'lhalt' ou 'lhalt -q'\\
+
+Pour analyser les trames avec wireshark : tcpdump -i eth0 -s0 > trame.txt : la sortie de la commande est écrite dans le fichier trame.txt
+	
+	\section{Couches protocolaires}
+	
+\textbf{1. En combien d'étapes peut-on décomposer le transfert d’information d’une séquence de la commande ping ?}\\
+Il y a deux étapes : une request de P2 vers P1 et une reply de P1 vers P2.
+
+\textbf{2. Quelles sont les couches protocolaires utilisées ?}\\
+Les couches protocolaires : 2 (liaison) et 7 (application). ICMP est de niveau 2. Ping est une application de niveau 7.
+
+\textbf{3. Lorsque p2 ping l’adresse 10.0.0.2, pourquoi p1 ne reçoit rien ?}\\
+Parce que 10.0.0.2 est l'adresse IP de P2 donc P1 ne reçoit rien.	
+\end{document}

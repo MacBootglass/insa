@@ -1,0 +1,11 @@
+ip link set eth0 up
+vconfig add eth0 10
+ip link set eth0.10 up
+vconfig add eth0 20
+ip link set eth0.20 up
+
+
+ip addr add 10.10.0.250/16 dev eth0.10
+ip addr add 10.20.0.250/16 dev eth0.20
+
+sysctl net.ipv4.ip_forward=1

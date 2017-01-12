@@ -1,0 +1,25 @@
+;
+; BIND reverse data file for local loopback interface
+;
+$TTL	604800
+@	IN	SOA	localhost. root.localhost. (
+			      1		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+@	IN	NS	ns.mabotie.fr.
+240	IN	PTR	dhcp.maboite.fr.
+241	IN	PTR	ns.maboite.fr.
+250	IN	PTR	fw.maboite.fr.
+1	IN	PTR	dsi1.maboite.fr.
+2	IN	PTR	dsi2.maboite.fr.
+8	IN	PTR	vis1.maboite.fr.
+9	IN	PTR	vis2.maboite.fr.
+10	IN	PTR	vis3.maboite.fr.
+11	IN	PTR	vis4.maboite.fr.
+12	IN	PTR	vis5.maboite.fr.
+13	IN	PTR	vis6.maboite.fr.
+14	IN	PTR	vis7.maboite.fr.
+15	IN	PTR	vis8.maboite.fr.

@@ -1,0 +1,15 @@
+ifconfig eth25 up
+ifconfig eth1 up
+ifconfig eth25 hw ether 00:00:00:00:02:25
+ifconfig eth1 hw ether 00:00:00:00:02:01
+
+brctl addbr vlan10
+
+brctl addif vlan10 eth1
+brctl addif vlan10 eth25
+
+brctl stp vlan10 on
+
+ifconfig vlan10 up
+
+brctl setageing vlan10 7200

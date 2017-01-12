@@ -1,0 +1,85 @@
+\documentclass[a4paper]{article}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{geometry}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{lscape}
+\usepackage{pict2e}
+\usepackage{parskip}
+\usepackage[squaren, Gray, cdot]{SIunits}
+
+\geometry{hmargin=2.0cm, vmargin=2.5cm}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+
+\pagestyle{fancy}
+
+\fancyhead[C]{\textbf{Réseau} \\ TP3 : Commutation - SUITE}  
+\fancyhead[L]{}
+\fancyhead[R]{}
+\renewcommand{\headrulewidth}{0.5pt}
+
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[C]{Publiée le \today}
+\fancyfoot[R]{page \thepage/\pageref{LastPage}}
+\fancyfoot[L]{FIQUET - THEOLOGIEN}
+
+\makeatletter
+\@addtoreset{section}{part}
+\makeatother
+
+% \par\leavevmode\par
+\begin{document}
+
+	\section{Recherche documentaire}
+		\subsection{Commande netstat}
+\noindent
+--> Affiche les connexions réseau, les tables de routage, les statistiques des interfaces, les connexions masquées, les messages netlink, et les membres multicast. \\
+
+Options disponibles : \\
+\begin{itemize}
+	\item -r : permet de visualiser la table de routage. Équivalent de la commande route -n. \\
+	\item -n : affiche les adresses en format numérique au lieu d'essayer de déterminer le nom symbolique d'hôte, de port ou d'utilisateur. \\
+\end{itemize}
+
+
+	\section{Évolution du réseau de la PME}
+		\subsection{Configuration du réseau} 
+Voir les fichiers de configuration (TP3 - part 1)
+
+		\subsection{Ping de P1 vers P3}
+P2 ne voit rien du tout, il voit uniquement le spanning tree comme les deux machines sont sur des domaines de collision différents. On voit la requête ARP en broadcast au début. \\
+Comme les machines ne sont plus sur le même domaine de collsion, on ne voit plus les échanges entre P1 et P3. 
+
+
+		\subsection{Changement des adresses de P2 et P5}
+Pour P2 : \textbf{\$ ifconfig eth0 20.0.0.2 netmask 255.0.0.0 up} \\
+
+Pour P5 : \textbf{\$ ifconfig eth0 20.0.0.5 netmask 255.0.0.0 up} \\
+
+On ping P2 depuis P1 :  p1:~\# ping 20.0.0.2  connect: Network is unreachable \\
+
+On voit qu'on ne peut pas l'atteindre car si on fait route -n on voit qu'il n'y a pas de route. 
+		
+		\subsection{Une sécurité relative}
+\noindent		
+On va taper la commande suivante dans P1 pour créer l'alias :  \\
+\textbf{\$ ifconfig eth0:0 20.0.0.1/8 up	} \\
+
+Le fait de créer cette alias rajoute une ligne dans la table de routage qui lui indique qu'il faut passer par l'interface eth0 pour joindre le réseau 20.0.0.0/8. Ainsi à  partir de maintenant, P1 sait quelle interface utiliser pour accéder à 20.0.0.0/8. Le reste se fait au niveau 2 avec les adresses MAC pour les switchs. 
+
+	\section{Question subsidiaire}
+
+Désaction du pont sur sw1 : \$ ifconfig vlan1 down \\
+
+Quand on désactive puis réactive le pont sur sw1, on remarque que les paquets de ping mettent du temps à arriver. On remarque des trames STP (spanning tree) avec le flag Topologie changed sont présentes pour indiquer un changement de topologie du réseau. \\
+
+		
+			
+\end{document}

@@ -1,0 +1,162 @@
+DHCP
+
+1 DHCP exercice préliminaire
+
+DHCP : protocole client serveur qui permet à un client hôte d’un réseau local d’obtenir d’un serveur DHCP.
+
+--> En utilisant DHCP on souhaite surtout fournir à un hôte une adresse IP mais aussi le masque du sous-réseau auquel appartient cet hôte, l’adresse IP du routeur par défaut ou encore l’adresse IP d’un serveur DNS.
+
+Client : DHCP Discover : des que carte reseau allumé le PC demande une adresse IP
+Serveur : DHCP Offer  : propose adresse IP
+Client : DHCP Request : repond en unicast je veux cette adressse la (parfois on peut lui en proposer plusieurs)
+Serveur : DHCP ack
+
+QUESTION (corrigé):
+
+1) 	Adresse IP source : 0.0.0.0 : adresse reseau.
+	Adresse IP destination : 255.255.255.255 : adresse de broadcast
+	Use ces adresse la car cette trace la correspond au DHCP Discover, c'est le PC qui emet en broadcat pour demander une adresse IP. Et c'est 0.0.0.0 car la machine n'a pas encore d'adresse IP. 
+
+--> Le discover se fait sur l'adresse broadcast pour demander a toutes les machines local car on ne sait pas s'adresse pour cette demande. 
+
+
+2) l'adresse mac quand on parle en broadcast c'est : ff.ff.ff.ff.ff.ff
+
+3) 	192.168.0.247 : adresse source du serveur DHCP car c'est lui qui fait l'offre 
+	192.168.0.5 : c'est l'adresse qu'il propose d'allouer à la machine.  la vrai destination c'est l'adresse MAC de la machine (0.0.0.0) qui est unique)
+-->  192.168.0.247 -->  192.168.0.5  DHCP DHCPOffer
+--> @MAC source --> @MAC source
+
+4) même que 1er, le client ecrit toujours en 0.0.0.0. Il est en request donc l'adresse IP pas encore validé. Request : il informe tout le monde qu'il s'est mis d'accord. Tant que pas de validation il n'a pas encore droit d'utilise l'adresse IP proposé. 
+
+5)ICMP : PING. Le serveur avant de faire son offre, il lance un ping vers 192.168.0.5, si quelqu'un lui repond il ne va pas faire son offre. Pour ne pas faire une offre vers une adresse deja utilisé 
+
+6) temps entre messages 2 et 3 assez long : car on a lancé un ping et qu'on a attendu un certain temps pour etre sur que l'adresse était dispo. 
+
+
+[trace n°2 : le serveur d'adresse 192.168.0.247 fait un ping sur l'adresse 192.168.0.5 pour voir si l'adresse est disponible. 
+
+trace n°3 : le serveur fait donc une offre pour cette adresse si elle est dispo
+
+trace n°4 : la machine (toujours 0.0.0.0 car n'a toujours pas d'IP) fait une request en broadcast (255.255.255.255) pour recuperer l'IP
+
+trace n°5 : ACK = validation ]
+
+
+2 DHCP TP
+
+2.1 Configuration du DHCP :
+
+PRINCIPE : attribuer adresse IP a la dsi1 dsi2 et vis1 avec le dhcp qu'on devra configurer. Donc on peut lancer le lab en état. 
+
+On entre les commandes de configuration dans la machine virtuelle dhcp : cd / pour accéder au ls et aller dans etc
+
+
+
+subnet 10.10.0.0 netmask 255.255.0.0 {
+option domain-name-servers 10.10.0.241;
+option domain-name "maboite.fr";
+option routers 10.10.0.250;
+default-lease-time 20;
+max-lease-time 20;
+range 10.10.0.8 10.10.0.15;
+
+host dsi1 {
+  hardware ethernet 00:00:00:00:00:11;
+  fixed-address 10.10.0.1;
+}
+
+host dsi2 {
+  hardware ethernet 00:00:00:00:00:12;
+  fixed-address 10.10.0.2;
+}
+}
+
+
+4. Relancez le service DHCP : 
+/etc/init.d/dhcp3-server restart
+
+
+5/
+
+Pour le TCPDUMP : il faut utilier screen pour pouvoir lancer une commande au meme endroit que le tcpdump : 
+# screen -S nomDeSession
+Affiche Nouvel page de terminal qui est la nouvelle session 
+# tcpdump -i eth0 -w /hosthome/file.cap
+--> CTRL A
+--> CTRL D
+On revient sur le terminal d'avant et on lance notre commande :
+# dhclient eth0
+
+
+Pour vis1 il n'y a pas de host mais ça prend donc la première adresse du range :
+bound to 10.10.0.8 -- renewal in 11 seconds.
+
+
+Donc on a lancé hclient eth0 pour dsi1 dsi2 et vis1
+
+
+2.2 Relais DHCP
+
+
+
+host com1 {
+                hardware ethernet 00:00:00:00:00:21;
+                fixed-address 10.20.0.1;
+        }
+
+        host com2 {
+                hardware ethernet 00:00:00:00:00:22;
+                fixed-address 10.20.0.2;
+        }
+
+
+com 1 et 2 sont dans un autre domaine de broadcast/collision donc la configuation du dhcp qui est dans le vlan10 ne permet pas de donner une adresse IP au machine com1 et com2 qui sont sur le vlan20
+
+Need daemon sur le firewall --> paquet a installer
+
+Configuration : dire sur quelle interface j'écoute : eth0.20
+la conf demande : adresse serveur dhcp + interface +option supp
+
+
+desinstaller paquet si pb : dpkg --purge dhcp3-replay
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

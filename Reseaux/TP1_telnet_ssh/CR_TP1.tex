@@ -1,0 +1,138 @@
+\documentclass[a4paper]{article}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{geometry}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{lscape}
+\usepackage{pict2e}
+\usepackage{parskip}
+\usepackage[squaren, Gray, cdot]{SIunits}
+
+\geometry{hmargin=2.0cm, vmargin=2.5cm}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+
+\pagestyle{fancy}
+
+\fancyhead[C]{\textbf{Réseau} \\ TP1 : Démon - Initiation à la sécurité (telnet et ssh)}  
+\fancyhead[L]{}
+\fancyhead[R]{}
+\renewcommand{\headrulewidth}{0.5pt}
+
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[C]{Publiée le \today}
+\fancyfoot[R]{page \thepage/\pageref{LastPage}}
+\fancyfoot[L]{FIQUET - THEOLOGIEN}
+
+\makeatletter
+\@addtoreset{section}{part}
+\makeatother
+
+% \par\leavevmode\par
+\begin{document}
+
+	\section{Recherche documentaire}
+\noindent	
+\textbf{1. Fonctionnement du lancement des démons sous UNIX}	\\
+
+Un démon est un processus ou un ensemble de processus qui s'exécute en arrière-plan.
+Tous les services se trouvents dans le répertoire /etc/init.d/  
+
+Dans le répertoire /etc/init.d/ il y a plusieurs fichiers qui peuvent être lancés / arrêtés / redémarrer des programmes au démarrage. Les répertoires intéressants au démarrage : '/etc/rc.local' et '/etc/rc{0-6}.d'. Tous les fichiers se trouvant dans /etc/rc{0-6}.d sont des liens symboliques vers /etc/init.d/. Ils démarrent ou arrêtent des programmes au changement de runlevel. 
+
+--> \textbf{A propos des runlevel :}
+Les run levels ne sont pas tous normalisés. Niveau 0 = Arrêt. Niveau 1 = Mode mono-utilisateur ou maintenance. Niveau 2 à 5 = dépend du système d'exploitation (Le niveau 2 peut correspondre à un mode multi-utilisateur sans serveur applicatif. Le niveau 3 correspond alors à un environnement multi-utilisateur avec serveurs applicatifs. Le niveau 4 ou 5 est parfois utilisé pour lancer l'environnement graphique)
+
+--> Commandes de lancement de démons sous UNIX : \\
+\$ service <nom service> start|stop|reload|refresh \\
+\$ sytemctl start|stop|reload|refresh <nom service> \\
+
+Ancienne version (en salle machine) : \\
+\$ /etc/init.d/<service> start
+\$ /etc/init.d/<service> stop \\
+
+
+\textbf{2. A quoi sert le démon \textit{inetd}} \\
+
+inetd = Internet Super Server. C'est un démon UNIX qui permet de gérer les connexions à des services réseau. Au démarrage, inetd écoute un ensemble de ports configurés. Quand une demande de connexion TCP ou un datagramme UDP est reçue, inetd lance l'application configurée pour ce port. \\
+
+--> S’occupe de lancer les vieux services qui ne sont pas adapté au système : /etc/inetd.conf
+
+--> Lancer inetd : \\
+ /etc/init.d/inetd start \\
+ 
+ Pour activer un service inetd il suffit d'ajouter une ligne au fichiers /etc/inetd.conf dont la forme générale est: \$ service type-socket protocole propriétaire chemin-absolu argument \\
+ 
+
+\textbf{3. Comment assigne-t-on une adresse IP à une interface réseau à l'aide de la commande ifconfig} \\
+
+Ceci se fait à l'aide de la commande suivante pour assigner l'IP 192.168.1.1/24 à l'interface eth0 : ifconfig eth0 192.168.1.1 netmask 255.255.255.0 up
+
+
+	\section{Utilisation de ifconfig}
+		\subsection{Pour la machine P1 :}
+\noindent
+ifconfig eth0 hw ether 00:00:00:00:00:01 \\
+ifconfig eth0 10.0.0.1 netmask 255.0.0.0 up \\
+/etc/init.d/inetd start 
+
+		\subsection{Pour la machine P2 :}
+\noindent		
+ifconfig eth0 hw ether 00:00:00:00:00:02 \\
+ifconfig eth0 10.0.0.2 netmask 255.0.0.0 up \\
+/etc/init.d/inetd start	
+		
+		\subsection{Pour la machine P3 :}
+\noindent		
+ifconfig eth0 hw ether 00:00:00:00:00:03 \\
+ifconfig eth0 10.0.0.3 netmask 255.0.0.0 up \\
+/etc/init.d/inetd start 	\\
+
+Le lancement d'inetd permet de pouvoir lancer tous les processus réseaux automatiquement ensuite : telnet, ssh etc.
+
+\textbf{Quels sont les services gérés par inetd sur ces machines ?} \\
+Seulement telnet et tftp. On a vu ceci en faisant un : \$ cat /etc/inetd.conf
+		
+	
+	\section{Telnet}
+	
+Pour se 	connecter en telnet de PC 1 à PC 3, sur PC 1 on saisi : \$ telnet 10.0.0.3
+
+Ensuite on capture les paquets sur P2 avec les commandes suivante (.pcap ou .cap) : \\
+\$ cd /hosthome \\
+\$ tcpdump -i eth0 -w telnet.pcap \\
+\$ cp telnet.pcap Bureau/telnet.pcap \\
+
+On ouvre ensuite le fichier avec Wireshark, on trouve un paquet Telnet, clic droit puis "Follow TCP Stream". 
+
+Si on voulait écouter depuis le PC 3 : \$ tcpdump host 10.0.0.1 and 10.0.0.2 -w telnet.pcap -i eth0 
+
+		\subsection{Procédure :}
+			
+1) Avant tout lancer le service telnet avec : /etc/init.d/inetd start	\\
+
+	
+2) L'espion P3 lance la commande suivante pour enregistrer les trames qui transitent sur le réseau dans le fichier captureP3.cap : tcpdump -i eth0 -s0 -w captureP3 \\
+
+
+3) On lance telnet dans la machine p1 vers p2 : telnet -l guest 10.0.0.2
+
+4) La machine p3 enregistre le fichier dans la machine physique pour ensuite l'analyser avec wireshark : cp captureP3 /hosthome/
+
+	
+	\section{SSH}
+
+--> Même procédure que précédemment mais cette fois ci on active le service ssh : /etc/init.d/ssh start  \\
+--> On lance ssh ainsi : ssh guest@10.0.0.2
+
+	\section{CONCLUSION}
+	
+Avec Telnet les mots de passe transitent en clair et ils transitent en crypté avec SSH. 	
+	
+\end{document}

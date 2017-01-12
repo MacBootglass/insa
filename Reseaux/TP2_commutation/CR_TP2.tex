@@ -1,0 +1,175 @@
+\documentclass[a4paper]{article}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{geometry}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{lscape}
+\usepackage{pict2e}
+\usepackage{parskip}
+\usepackage[squaren, Gray, cdot]{SIunits}
+
+\geometry{hmargin=2.0cm, vmargin=2.5cm}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+
+\pagestyle{fancy}
+
+\fancyhead[C]{\textbf{Réseau} \\ TP2 : Commutation}  
+\fancyhead[L]{}
+\fancyhead[R]{}
+\renewcommand{\headrulewidth}{0.5pt}
+
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[C]{Publiée le \today}
+\fancyfoot[R]{page \thepage/\pageref{LastPage}}
+\fancyfoot[L]{FIQUET - THEOLOGIEN}
+
+\makeatletter
+\@addtoreset{section}{part}
+\makeatother
+
+% \par\leavevmode\par
+\begin{document}
+
+	\section{Recherche documentaire}
+		\subsection{Commande brctl}
+\noindent
+--> Permet de mettre en place, de maintenir et d'inspecter la configuration du bridge Ethernet. Un bridge permet de connecter plusieurs réseaux Ethernet ensemble, de manière à ce que le réseau apparaisse à un seul Ethernet pour les autres. \\
+
+\noindent
+--> addbr : crée une nouvelle instance d'un pont Ethernet.\\
+\textbf{\$ brctl addbr <name>} avec \textit{name} : nom de l'interface. \\
+
+\noindent
+--> delbr : supprime une instance d'un pont Ethernet. \\
+\textbf{\$ brctl delbr <name>} \\
+
+\noindent
+--> addif : fera de l'interface \textit{ifname} un port du bridge \textit{brname}. Cela signifie que toutes les trames reçues sur \textit{ifname} seront traitées comme si elles étaient destinées pour ce pont. De même, en envoyant des trames à \textit{brname}, \textit{ifname} sera considéré comme une interface possible de sortie. \\
+\textbf{\$ brctl addif <brname> <ifname>} \\
+
+\noindent
+--> showmacs : affiche une liste des adresses MAC apprises par ce bridge. \\
+\textbf{\$ brctl showmacs <brname>}
+
+	\subsection{Commande watch}
+Exécute une commande périodiquement en affichant le résultat à l'écran. Par exemple, pour afficher la date courante toutes les secondes. 
+
+\textbf{\$ watch -n 1 date}
+
+	\subsection{Commande arp}
+\noindent
+Permet de manipuler la table ARP du système. \\
+
+Option possibles : 
+\begin{itemize}
+	\item -a <hostname> : affiche les entrées concernant l’hôte spécifié. 
+	\item -d <hostname> : enlève une entrée pour l'hôte spécifié.
+	\item -n : affiche les adresses numériques au lieu d'utiliser les reverse DNS. 
+\end{itemize}
+
+	\subsection{Commande arpspoof}
+\noindent
+--> Intercepte les paquets sur un LAN \\
+\textbf{\$ arpspoof <host>} (spécifie l'host sur lequel on intercepte les paquets) \\
+
+Options possibles : 
+\begin{itemize}
+	\item -i <interface> : l'interface à utiliser
+	\item -t <target> : spécifie un host particulier à empoisonner.
+\end{itemize}
+
+	\section{Commutation cas 1}
+\noindent
+dca : domaine de colision (un même hub) \\
+p1[0] : le 0 correspond à eth\textbf{0} \\
+sw1[1] : pour eth\textbf{1} \\
+TCAM --> Table de commutation\\
+
+		\subsection{Question 3}
+On ne peut pas pinguer le PC 4 à partir du PC 1 car le switch ne fait rien transiter. Il faut bridger les deux interfaces du pont. 
+
+		\subsection{Question 4}
+--> Dans le fichier sw1.startup : 
+
+\noindent
+\textit{\# On crée le bridge}	\\
+\textbf{brctl addbr br0}\\
+\textit{\# On ajoute les deux interfaces au bridge}\\
+\textbf{brctl addif br0 eth1\\
+brctl addif br0 eth25}
+\textit{\# Spanning tree sur le pont} \\
+\textbf{brctl stp br0 on}\\
+\textit{\# On monte le bridge}\\
+\textbf{ifconfif br0 up}\\
+
+--> On configure les 4 PC et les domaines de collision dans le fichier lab.conf
+
+		\subsection{Question 5}
+On affiche la table de commutation avec la commande suivante : \\
+\textbf{\$ watch -n 1 brctl showmacs br0} \\
+
+Pour changer le timeout du pont (temps en secondes) : \\
+\textbf{\$ brctl setageing <brname> <time>} \\
+
+On exécute donc sur sw1 la commande suivante pour régler le timeout à 10 secondes : \\
+\textbf{\$ brctl setageing br0 10} \\
+
+On voit que le switch garde en mémoire les adresses MAC seulement pendant 10 secondes. 
+
+		\subsection{Question 6}
+Depuis P2 : \\
+
+\textit{\# On ne peut dump que dans ce dossier}\\
+\textbf{\$ cd /hosthome} \\
+\textbf{\$ tcpdump -i eth0 -w dump.pcap}\\
+\textit{\# On ramène sur le bureau de la machine physique}\\
+\textbf{\$ cp dump.pcap Bureau/dump.pcap}\\
+
+--> On ouvre le fichier dans Wireshark.
+
+		\subsection{Question 7}
+On doit vider la table de P1 \\
+
+\textit{\# Voir la table}\\
+\textbf{\$ arp -n}\\
+\textit{\# Supprimer toute les IPs présentes}\\
+\textbf{\$ arp -d 10.0.0.4}\\
+
+En pinguant P3 depuis P1. La table de commutation du switch P4 ne voit rien, il ne voit que la requête ARP initiale. P4 reçoit l'ARP en broadcast car le switch ne sait pas ou se trouve la machine. P3 étant sur la même interface que P1 (et sur une interface différente de P4), P4 ne voit plus rien ensuite.
+ 
+		\subsection{Question 8}
+P4 va recevoir une requête ARP initiale comme avant. Après l'expiration de la table de commutation, il va recevoir une requête ICMP car le switch ne sait plus où se trouvent les machines et va donc relayer sur les 2 interfaces. Des qu'il y a de nouveau appris, on ne voit plus rien. On ne voit pas une autre requête ARP parce que P1 connaît déjà P3 : il l'a toujours dans sa table ARP. 
+
+		\subsection{Question 9}
+Rien du tout.
+
+	\section{MITM}
+
+		\subsection{Question 1}
+		
+On démarre inetd sur P3. \\
+\textbf{\$ /etc/init.d/inetd start}
+
+		\subsection{Question 2}
+Dans P4 :\\
+
+\textbf{\$ screen -A -S spoof} \\
+\textbf{\$ arpspoof -t 10.0.0.1 10.0.0.3} \\
+\textbf{\$ arpspoof -t <IPaPolluer> <IPaUsurper>} \\
+
+CTRL + A puis D pour détacher le screen. Après avoir effectué le telnet. On voit les requêtes d'attaques ARP. On voit les demandes de connexion et quelques données sporadiques. 
+
+		\subsection{Question 3}
+
+On remarque que l'on récupère le trafic de P1 vers P3 mais on ne récupère pas les réponses de P4 vers P1. Il faudrait donc dire à P3 que P1 c'est P4. \\
+
+P4 renvoie à P3 car il voit que le destinataire est l'adresse IP de P3. P4 joue le rôle de routeur en faisant suivre les paquets qui ne lui sont pas adressées (IP forward à 1). 		
+	
+\end{document}

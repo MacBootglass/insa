@@ -1,0 +1,204 @@
+\documentclass[a4paper]{article}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{geometry}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{lscape}
+\usepackage{pict2e}
+\usepackage{parskip}
+\usepackage[squaren, Gray, cdot]{SIunits}
+
+\geometry{hmargin=2.0cm, vmargin=2.5cm}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+
+\pagestyle{fancy}
+
+\fancyhead[C]{\textbf{Réseau} \\ TP4 : VLAN}  
+\fancyhead[L]{}
+\fancyhead[R]{}
+\renewcommand{\headrulewidth}{0.5pt}
+
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[C]{Publiée le \today}
+\fancyfoot[R]{page \thepage/\pageref{LastPage}}
+\fancyfoot[L]{FIQUET - THEOLOGIEN}
+
+\makeatletter
+\@addtoreset{section}{part}
+\makeatother
+
+% \par\leavevmode\par
+\begin{document}
+
+	\section{VLAN (physique)}
+		
+\noindent
+--> Enoncé : Afin de résoudre le problème évoqué à la fin du TP2 où le réseau dispose d'un seul domaine de diffusion de niveau 2 et de 2 domaines de diffusion de niveau 3, ce qui ne permet pas une étanchéité entre les services Marketting et R\&D nous allons mettre en place des VLANs différents sur deux ports distincts des switchs. 
+		\subsection{Modification du réseau}
+Voir les fichier du lab :
+
+\textbf{Switch 1 :}
+
+\begin{verbatim}
+# Création du VLAN 10
+brctl addbr vlan10
+# Ajout des interfaces
+brctl addif vlan10 eth1
+brctl addif vlan10 eth3
+brctl addif vlan10 eth25
+brctl stp vlan10 on
+ifconfig vlan10 up
+brctl setageing vlan10 7200
+# Création du VLAN 20
+brctl addbr vlan20
+# Ajout des interfaces
+brctl addif vlan20 eth2
+brctl addif vlan20 eth26
+brctl stp vlan20 on
+ifconfig vlan20 up
+brctl setageing vlan20 7200
+\end{verbatim}
+
+\textbf{Switch 2 :}
+
+\begin{verbatim}
+# Création du VLAN 10
+brctl addbr vlan10
+# Ajout des interfaces
+brctl addif vlan10 eth1
+brctl addif vlan10 eth25
+brctl stp vlan10 on
+ifconfig vlan10 up
+brctl setageing vlan10 7200
+# Création du VLAN 20
+brctl addbr vlan20
+# Ajout des interfaces
+brctl addif vlan20 eth2
+brctl addif vlan20 eth26
+brctl stp vlan20 on
+ifconfig vlan20 up
+brctl setageing vlan20 7200
+\end{verbatim}
+
+
+		\subsection{Verification du cloisonnement}
+Sur sw1 on exécute la commande suivante : \$ watch -n 1 brctl showmacs vlan10 \\
+
+Et sur sw2 : \$ watch -n 1 brctl showmacs vlan20 \\
+
+On ping P5 depuis P2. On remarque que la table de commutation du VLAN 10 sur sw1 n'apprend rien car les paquets du VLAN20 ne peuvent pas passer dans le VLAN10. La table de commutation de sw2 sur VLAN20 montre que le switch a appris des choses. \\
+
+On tente de faire de l'IP aliasing pour essayer de passer d'un réseau à l'autre. On va créer un alias sur P3 pour essayer de rentrer dans le réseau de P2 et P5, 20.0.0.0/8, qui est dans un VLAN différent, à savoir le 20. La commande est la suivante : \$ ifconfig eth0:0 20.0.0.1/8 up \\
+
+On remarque que même si l'alias a rajouté une route dans la table de routage, on ne peut pas joindre une machine du réseau 20.0.0.0/8 car elle est sur un VLAN différent.
+
+		\subsection{Question 5 :Définir 2 adresses IP identiques dans 2 VLAN?}
+
+C'est possible si les 2 machines sont sur un même réseau et qu'on ne doit pas passer par un routeur pour les joindre. Le problème se poserait si on avait besoin de faire du routage. 
+
+		\subsection{Question 6 :Quel est selon vous l'inconvénient majeur de définir un vlan par port physique}
+
+On est obligé d'avoir autant de ports que de VLAN. Ça devient très compliqué si on a des milliers de VLAN à propager sur un seul équipement.
+
+
+	\section{802.1q (logique)}
+		\subsection{Création des VLAN sur le port 27} 
+
+\textbf{Commandes :} 
+
+\begin{itemize}
+	\item Création des VLANs sur le port 27 : \textbf{\$ vconfig add eth27 10  - \$ vconfig add eth27 20}\\
+	\item Création des interfaces de VLAN : \textbf{\$ ifconfig eth27.10 up - \$ ifconfig eth27.20 up} \\
+	\item  Bind des interfaces de VLANs créées aux ponts :\textbf{\$ brctl addif vlan10 eth27.10 - \$ brctl addif vlan20 eth27.20} \\
+\end{itemize}
+
+
+\textbf{SWITCH 1 : }
+
+\begin{verbatim}
+ifconfig eth1 up
+ifconfig eth2 up
+ifconfig eth3 up
+ifconfig eth27 up
+
+ifconfig eth1 hw ether 00:00:00:00:01:01  # sw1 port 1
+ifconfig eth2 hw ether 00:00:00:00:01:02  # sw1 port 2
+ifconfig eth3 hw ether 00:00:00:00:01:03  # sw1 port 3
+ifconfig eth27 hw ether 00:00:00:00:01:27 # sw1 port 27
+
+vconfig add eth27 10
+vconfig add eth27 20
+
+ifconfig eth27.10 up
+ifconfig eth27.20 up
+
+brctl addbr vlan10                         # creation d'un pont appele vlan10
+brctl addbr vlan20                         # creation d'un pont appele vlan20
+
+brctl addif vlan10 eth1                    # ajout de eth1 a vlan10
+brctl addif vlan10 eth3                    # ajout de eth3 a vlan10
+brctl addif vlan10 eth27.10                # ajout de eth27 a vlan10
+
+brctl addif vlan20 eth2                    # ajout de eth2 a vlan20
+brctl addif vlan20 eth27.20                # ajout de eth27 a vlan20
+
+brctl stp vlan10 on                        # activation du protocole spanning tree sur ce pont
+brctl stp vlan20 on                        # activation du protocole spanning tree sur ce pont
+
+ifconfig vlan10 up                         # monte vlan10
+ifconfig vlan20 up                         # monte vlan20
+
+brctl setageing vlan10 7200
+brctl setageing vlan20 7200
+\end{verbatim}
+	
+\textbf{SWITCH 2 : }	
+\begin{verbatim}
+ifconfig eth1 up
+ifconfig eth2 up
+ifconfig eth27 up
+
+ifconfig eth1 hw ether 00:00:00:00:02:01  # sw1 port 1
+ifconfig eth2 hw ether 00:00:00:00:02:02  # sw1 port 2
+ifconfig eth27 hw ether 00:00:00:00:02:27 # sw1 port 27
+
+vconfig add eth27 10
+vconfig add eth27 20
+
+ifconfig eth27.10 up
+ifconfig eth27.20 up
+
+brctl addbr vlan10                         # creation d'un pont appele vlan10
+brctl addbr vlan20                         # creation d'un pont appele vlan20
+
+brctl addif vlan10 eth1                    # ajout de eth1 a vlan10
+brctl addif vlan10 eth27.10                # ajout de eth27 a vlan10
+
+brctl addif vlan20 eth2                    # ajout de eth2 a vlan20
+brctl addif vlan20 eth27.20                # ajout de eth27 a vlan20
+
+brctl stp vlan10 on                        # activation du protocole spanning tree sur ce pont
+brctl stp vlan20 on                        # activation du protocole spanning tree sur ce pont
+
+ifconfig vlan10 up                         # monte vlan10
+ifconfig vlan20 up                         # monte vlan20
+
+brctl setageing vlan100 7200
+brctl setageing vlan20 7200
+\end{verbatim}	
+
+	\subsection{WIreshark}		
+	
+\$ tcpdump -i eth27 -w /hosthome/Bureau/capture.cap \\
+
+Sur les captures Wireshark on voit bien apparaître des informations sur l'ID du VLAN qui est emprunté.
+
+
+\end{document}

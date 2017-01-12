@@ -1,0 +1,198 @@
+\documentclass[a4paper]{article}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{geometry}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{lscape}
+\usepackage{pict2e}
+\usepackage{parskip}
+\usepackage[squaren, Gray, cdot]{SIunits}
+
+\geometry{hmargin=2.0cm, vmargin=2.5cm}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+
+\pagestyle{fancy}
+
+\fancyhead[C]{\textbf{Réseau} \\ TP6 : Firewall}  
+\fancyhead[L]{}
+\fancyhead[R]{}
+\renewcommand{\headrulewidth}{0.5pt}
+
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[C]{Publiée le \today}
+\fancyfoot[R]{page \thepage/\pageref{LastPage}}
+\fancyfoot[L]{FIQUET - THEOLOGIEN}
+
+\makeatletter
+\@addtoreset{section}{part}
+\makeatother
+
+% \par\leavevmode\par
+\begin{document}
+
+Un firewall possède 3 états : \textbf{input} (le flux qui arrive - IP source), \textbf{output} (le flux qui part - IP destination), \textbf{forward} (le flux qui traverse). \\
+
+Commande : \$ iptables -t filter (ou nat) -I INPUT (ou OUTPUT, FORWARD), -p icmp (ou tcp, udp : protocole), -j DROP (ou DENY,ACCEPT,LOG : décision). \\
+
+DROP : met le paquet silencieusement a la poubelle si on le ping (avec protocole icmp). \\
+DENY : j'indique que le paquet a été filtré. \\
+
+Le firewall travail par liste blanche. \\
+
+Contrairement à la commande ifconfig, la commande ip attribue directement un masque. 
+
+
+	\section{Configuration du lab}
+
+\noindent
+fw : firewall (remplace souvent le routeur)\\
+DMZ : serveur \\
+ns : nom serveur de la société \\
+www : serveur web \\
+
+		\subsection{Configuration des machines DSI1 et VIS1}
+
+\textbf{Configuration résolution DNS} : dans le dossier dsi1 et vis1 on crée un répertoire 'etc' dans lequel on crée un fichier resolv.conf contenant la ligne suivante : nameserver 10.30.0.1 (ou on utilise redirection : dernière ligne du dsi1.startup) \\
+
+\textbf{Configuration IP : }\\
+
+\noindent
+\textbf{dsi1.startup }(même principe pour vis1.startup) : 
+
+\begin{verbatim}
+ip link set eth0 up
+ip addr add 10.20.0.1/16 dev eth0
+route add -net 0/0 gw 10.20.0.250 #donne la route/passerelle par défaut (l'IP qui part du bloc DSI)
+echo "nameserver 10.30.0.1" > /etc/resolv.conf
+\end{verbatim}
+
+
+\textbf{Configuration du Firewall : }
+
+Par défault on se trouve sur la table filter. Pour changer de table et faire du NAT : iptables -t nat. Pour effacer une règles, on retape la commande et on utilise un -D en argument. \\
+
+\begin{verbatim}
+--> Dropper les paquets entrant et traversant, acceptation des paquets en sortie. 
+ # Par défaut, on n'accepte rien
+$ iptables -P FORWARD DROP
+$ iptables -P INPUT DROP
+# On accepte ce qui sort
+$ iptables -P OUTPUT ACCEPT 
+
+--> Acceptation des pings
+# On accepte sur FORWARD l'ICMP
+$ iptables -I FORWARD -p icmp -j ACCEPT
+$ iptables -I INPUT -p icmp -j ACCEPT
+$ iptables -I OUTPUT -p icmp -j ACCEPT
+
+\end{verbatim}
+
+\noindent
+\textbf{fw.startup  :}
+	
+\begin{verbatim}
+ip link set eth0 up # réveiller l'interface generale
+
+vconfig add eth0 10  # créer la sous interface VLAN10
+ip link set eth0.10 up  # on la réveille
+
+vconfig add eth0 20   # créer VLAN20
+ip link set eth0.20 up
+
+vconfig add eth0 30   # créer VLAN30
+ip link set eth0.30 up
+
+vconfig add eth0 100   # créer VLAN100
+ip link set eth0.100 up
+
+ip addr add 10.10.0.250/16 dev eth0.10   # on attribue l'adresse IP a la sous interface 10
+ip addr add 10.20.0.250/16 dev eth0.20
+ip addr add 10.30.0.250/16 dev eth0.30
+ip addr add 194.167.110.1/24 dev eth0.100
+
+#dev : device
+
+#ATTENTION : partie à ajouter après dans la partie filtrage
+iptables -t filter -P INPUT DROP
+iptables -t filter -P FORWARD DROP
+iptables -t filter -P OUTPUT ACCEPT
+iptables -t filter  -I INPUT -p icmp -j ACCEPT
+iptables -t filter  -I FORWARD -p icmp -j ACCEPT
+iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+\end{verbatim}	
+		
+Une fois que les IP et les default gateway sont bien faite on doit pouvoir tout pinguer. Ensuite on configure le firewall pour limiter les accès. \\
+
+\textbf{Commande pour observer ce qui se passe quand on ping :} \\
+\$ tcpdump -n -i eth0 arp or icmp or ip \\
+
+Pour CI : default gateway : 194.167.110.1. Elle n'est pas dans le .startup c'est pour cela que le ping ne marche pas avec CI. CI n'ayant pas de default gateway il reçoit bien les paquets mais il ne sait pas où allait pour renvoyer la réponse puisqu'on ne lui a pas indiqué le chemin. \\
+
+Commande si problème : -pkill netkit * \\
+
+
+	\section{Filtrage}
+	
+Pour afficher toutes les règles iptables : iptables -nvL. \\
+
+Pour autoriser les pings pas besoin en output car on a déjà le droit de le faire donc need de l'autorisation en input et forward : \$ iptables -t filter -I FORWARD -p icmp -j ACCEPT
+	
+\textbf{Commande pour que les machines du réseau DSI puisse se connecter en SSH au FW :}\\
+\$ iptables -I INPUT -s 10.20.0.0/16 -p tcp --dport 22 -j ACCEPT  \\
+
+\textbf{Commande pour que tout le monde puisse accéder à www en HTTP : }
+\begin{verbatim}
+$ iptables -I FORWARD -p tcp --dport http -d 10.30.0.2 -j ACCEPT
+# On accepte le retour des paquets des connexions déjà établies
+$ iptables -I FORWARD -p tcp -m state --state ESTABLISHED -s 10.30.0.2 -j ACCEPT
+\end{verbatim}
+
+\textbf{Commande pour que le serveur NS puisse servir les requetes DNS : }
+\begin{verbatim}
+# On accepte les VLAN 10, 20, 30 (réseaux internes)
+$ iptables -I FORWARD -i eth0.10 -p udp --dport 53 -d 10.30.0.1 -j ACCEPT
+$ iptables -I FORWARD -i eth0.20 -p udp --dport 53 -d 10.30.0.1 -j ACCEPT
+$ iptables -I FORWARD -i eth0.30 -p udp --dport 53 -d 10.30.0.1 -j ACCEPT
+\end{verbatim}
+
+Tests de configuration : Le dernier telnet ne fonctionne pas car une machine de l'extérieur n'est pas autorisée par le FW. 
+
+	\section{NAT}
+\noindent
+--> Pour permettre à CI d'accéder aux services hébergés sur www, nous devons réaliser la translation d'adresse sur le FW permettant de donner une visibilité publique à ces services. Pour cela, ajoutez une règle de NAT sur FW permettant de renvoyer vers www (cad : changer l'adresse IP de destination) les paquets ayant les caractéristiques suivantes : \\
+\begin{itemize}
+	\item Être arrivés via l'interface vlan 100 de FW \\
+	\item Être à destination de l'adresse IP publique de FW \\
+	\item Être des connexions HTTP \\
+\end{itemize}
+
+\textbf{Commande pour autoriser l'accès au serveur web depuis internet :} \\
+\$ iptables -i eth0.100 -t nat -A PREROUTING -p tcp -d 194.167.110.1 --dport 80 -j DNAT --to-destination 10.30.0.2 \\
+
+On voit bien le NAT en action : l'adresse de destination est bien changée par l'adresse privée du serveur web. Quand le serveur web répond, l'adresse source est bien changée au niveau du firewall.  \\
+
+Commande pour permettre au réseau interne d'accéder à CI : \\
+\$ iptables -t nat -A POSTROUTING -s 10.0.0.0/8 -o eth0.100 -j SNAT --to-source 194.167.110.1 \\
+
+L'adresse IP a bien été translatée au niveau du FW. \\
+
+
+	\section{Antispoofing}
+
+L'antispoofing c'est le fait de faker son adresse IP source. Si on fake son adresse IP en prenant une adresse IP du pool de la DSI, on pourrait faire un SSH sur le FW et changer les règles. Un des moyens de contrer cette attaque est de dire à iptables de vérifier les pools d'adresses IP en plus des interfaces. Si un paquet ayant une adresse IP n'arrive pas sur l'interface attendue, on le drop automatiquement.	 \\
+
+\textbf{Un exemple de règle :}
+\begin{verbatim}
+# Le point d'exclamation symbolise la négation
+# Si le paquet arrivant de eth0.10 ne vient pas de 10.10.0.0/16, je le dégage
+iptables -I FORWARD -i eth0.10 ! -s 10.10.0.0/16 -j DROP
+\end{verbatim}
+
+\end{document}
