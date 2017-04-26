@@ -1,0 +1,33 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Restful Web Application</display-name>
+  <context-param>
+    <param-name>resteasy.servlet.mapping.prefix</param-name>
+    <param-value>/AnnuaireRest</param-value>
+  </context-param>
+  <servlet>
+    <servlet-name>resteasy-servlet</servlet-name>
+    <servlet-class>
+  		org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
+    </servlet-class>
+    <init-param>
+      <param-name>javax.ws.rs.Application</param-name>
+      <param-value>annuaire.AnnuaireRessource</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>resteasy-servlet</servlet-name>
+    <url-pattern>/AnnuaireRest/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>WADL</servlet-name>
+    <servlet-class>org.jboss.resteasy.wadl.ResteasyWadlServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WADL</servlet-name>
+    <url-pattern>/application.wadl</url-pattern>
+  </servlet-mapping>
+</web-app>
